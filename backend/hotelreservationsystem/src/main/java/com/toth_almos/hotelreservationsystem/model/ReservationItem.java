@@ -13,7 +13,7 @@ public class ReservationItem {
 
     @ManyToOne
     @JoinColumn(name = "reservation_id", nullable = false)
-    private long reservationId;
+    private Reservation reservation;
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
