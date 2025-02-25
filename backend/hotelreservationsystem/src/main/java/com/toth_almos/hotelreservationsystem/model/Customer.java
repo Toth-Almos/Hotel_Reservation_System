@@ -4,10 +4,12 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
 @Table(name = "customer")
+@EqualsAndHashCode(callSuper = true)
 public class Customer extends User {
     private String email;
     private String phoneNumber;

@@ -3,14 +3,12 @@ package com.toth_almos.hotelreservationsystem.service;
 import com.toth_almos.hotelreservationsystem.model.Hotel;
 import com.toth_almos.hotelreservationsystem.repository.HotelRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
