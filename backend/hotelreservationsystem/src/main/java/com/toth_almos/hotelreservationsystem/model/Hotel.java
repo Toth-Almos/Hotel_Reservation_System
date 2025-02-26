@@ -13,8 +13,9 @@ public class Hotel {
     private Long id;
 
     private String name;
-    private int start;
+    private int star;
     private String country;
+    private String city;
     private String address;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
