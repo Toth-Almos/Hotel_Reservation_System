@@ -1,15 +1,15 @@
 .header {
-    background: white;
+    background: #EAE7DD;
     padding: 0;
-    border-bottom: 1px solid #e72929;
+    border-bottom: 1px solid rgb(114, 109, 109);
 }
 
 .header a {
-    color: #af1313;
+    color: #634f3f;
 }
 
 .header a:hover {
-    background: #e72929;
+    background: #634f3f;
     color: white;
     cursor: pointer;
 }

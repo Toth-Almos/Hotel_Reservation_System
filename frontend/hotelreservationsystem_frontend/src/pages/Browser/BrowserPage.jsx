@@ -16,8 +16,8 @@ export default function BrowserPage() {
             <ul className={classes.list}>
                 {hotels && hotels.map(hotel => (
                     <li key={hotel.id}>
-                        <Link to={`/hotels/${hotel.id}`}>
-                            <img className={classes.image} src={`/public/hotels/hotel_default.jpg`} alt={hotel.name} />
+                        <Link to={`/hotel/${hotel.id}`}>
+                            <img className={classes.image} src={`/hotels/hotel_default.jpg`} alt={hotel.name} />
 
                             <div className={classes.content}>
                                 <div className={classes["hotel-name-star"]}>
