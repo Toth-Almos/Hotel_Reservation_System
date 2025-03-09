@@ -18,8 +18,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain web(HttpSecurity httpSec) throws Exception {
-        httpSec.authorizeHttpRequests(auth -> auth.anyRequest().permitAll()).csrf(AbstractHttpConfigurer::disable);
-        return httpSec.build();
+    public SecurityFilterChain web(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll()).csrf(AbstractHttpConfigurer::disable);
+        return http.build();
     }
 }

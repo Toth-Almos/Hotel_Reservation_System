@@ -1,5 +1,7 @@
 package com.toth_almos.hotelreservationsystem.controller;
 
+import com.toth_almos.hotelreservationsystem.dto.RoomDTO;
+import com.toth_almos.hotelreservationsystem.mapper.RoomMapper;
 import com.toth_almos.hotelreservationsystem.model.Room;
 import com.toth_almos.hotelreservationsystem.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +12,28 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/rooms")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class RoomController {
 
     private final RoomService roomService;
+    private final RoomMapper roomMapper;
 
     @Autowired
-    public RoomController(RoomService roomService) {
+    public RoomController(RoomService roomService, RoomMapper roomMapper) {
         this.roomService = roomService;
+        this.roomMapper = roomMapper;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Room> findById(@PathVariable("id") Long id) {
+    public RoomDTO findById(@PathVariable("id") Long id) {
         Room room = roomService.findById(id);
-        return ResponseEntity.ok(room);
+        return roomMapper.toDTO(room);
     }
 
     @GetMapping("/hotel/rooms/{id}")
-    public ResponseEntity<List<Room>> findByHotelId(@PathVariable("id") Long id) {
+    public List<RoomDTO> findByHotelId(@PathVariable("id") Long id) {
         List<Room> rooms = roomService.findByHotelId(id);
-        return rooms.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(rooms);
+        List<RoomDTO> roomDTOs = roomMapper.toDTOList(rooms);
+        return rooms.isEmpty() ? null : roomDTOs;
     }
 }

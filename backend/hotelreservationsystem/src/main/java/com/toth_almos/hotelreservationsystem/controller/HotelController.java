@@ -1,5 +1,7 @@
 package com.toth_almos.hotelreservationsystem.controller;
 
+import com.toth_almos.hotelreservationsystem.dto.HotelDTO;
+import com.toth_almos.hotelreservationsystem.mapper.HotelMapper;
 import com.toth_almos.hotelreservationsystem.model.Hotel;
 import com.toth_almos.hotelreservationsystem.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +16,24 @@ import java.util.List;
 public class HotelController {
 
     private final HotelService hotelService;
+    private final HotelMapper hotelMapper;
 
     @Autowired
-    public HotelController(HotelService hotelService) {
+    public HotelController(HotelService hotelService, HotelMapper hotelMapper) {
         this.hotelService = hotelService;
+        this.hotelMapper = hotelMapper;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hotel> findById(@PathVariable("id") Long id) {
+    public HotelDTO findById(@PathVariable("id") Long id) {
         Hotel hotel = hotelService.findById(id);    //exception is handled my the GlobalExceptionHandler -> returns 404 if not found
-        return ResponseEntity.ok(hotel);
+        return hotelMapper.toDTO(hotel);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Hotel>> findAll() {
+    public List<HotelDTO> findAll() {
         List<Hotel> hotels = hotelService.findAll();
-        return hotels.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(hotels);
+        List<HotelDTO> hotelDTOs= hotelMapper.toDTOList(hotels);
+        return hotelDTOs.isEmpty() ? null : hotelDTOs;
     }
 }
