@@ -5,14 +5,13 @@ import com.toth_almos.hotelreservationsystem.mapper.RoomMapper;
 import com.toth_almos.hotelreservationsystem.model.Room;
 import com.toth_almos.hotelreservationsystem.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/rooms")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RoomController {
 
     private final RoomService roomService;

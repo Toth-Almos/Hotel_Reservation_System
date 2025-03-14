@@ -1,6 +1,5 @@
 package com.toth_almos.hotelreservationsystem.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +16,6 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)
-    @JsonBackReference
     private Hotel hotel;
 
     @Enumerated(EnumType.STRING)

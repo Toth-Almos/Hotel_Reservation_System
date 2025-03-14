@@ -1,6 +1,5 @@
 package com.toth_almos.hotelreservationsystem.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +23,5 @@ public class Hotel {
     private String address;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Room> rooms;
 }
