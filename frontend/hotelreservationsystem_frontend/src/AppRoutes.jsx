@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router"
 import HomePage from './pages/Home/HomePage'
 import BrowserPage from './pages/Browser/BrowserPage'
 import HotelPage from "./pages/Hotel/HotelPage"
+import LoginPage from "./pages/Login/LoginPage"
 
 export default function AppRoutes() {
     return (
@@ -9,6 +10,7 @@ export default function AppRoutes() {
             <Route path="/" element={<HomePage />} />
             <Route path="/browser" element={<BrowserPage />} />
             <Route path="/hotel/:id" element={<HotelPage />} />
+            <Route path="/login" element={<LoginPage />} />
         </Routes>
     )
 }

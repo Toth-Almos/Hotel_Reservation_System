@@ -13,14 +13,4 @@ public class UserServiceImpl implements UserService{
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
-    @Override
-    public void registerUser(String username, String password, UserRole role) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole(role);
-
-        userRepository.save(user);
-    }
 }

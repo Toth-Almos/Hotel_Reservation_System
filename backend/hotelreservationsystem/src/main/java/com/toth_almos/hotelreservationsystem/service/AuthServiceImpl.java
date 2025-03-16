@@ -27,7 +27,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserDTO login(String username, String password, HttpSession session) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
-
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         }
@@ -51,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void register(RegisterRequest request) {
+    public UserDTO register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already taken");
         }
@@ -65,5 +64,6 @@ public class AuthServiceImpl implements AuthService {
         newUser.setAddress(request.getAddress());
 
         userRepository.save(newUser);
+        return new UserDTO(newUser.getId(), newUser.getUsername(), newUser.getRole());
     }
 }
