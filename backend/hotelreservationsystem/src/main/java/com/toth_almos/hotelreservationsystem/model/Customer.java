@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-@Table(name = "customer")
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@DiscriminatorValue("customer")
 public class Customer extends User {
     private String email;
     private String phoneNumber;

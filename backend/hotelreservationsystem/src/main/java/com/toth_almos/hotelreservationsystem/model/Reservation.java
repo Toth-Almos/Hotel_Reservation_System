@@ -18,8 +18,8 @@ public class Reservation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)

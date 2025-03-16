@@ -17,8 +17,8 @@ public class Payment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     private double amount;
     private LocalDate paymentDate;
