@@ -5,15 +5,27 @@ export const login = async (username, password) => {
         const response = await apiClient.post('api/v1/auth/login', { username, password });
         if (response.status === 200) {
             const user = response.data;
-            sessionStorage.setItem("username", user.username);
-            sessionStorage.setItem("id", user.id);
-            sessionStorage.setItem("role", user.role);
+            //sessionStorage.setItem("username", user.username);
+            //sessionStorage.setItem("id", user.id);
+            //sessionStorage.setItem("role", user.role);
             return user;
         }
     } catch (error) {
         throw error.response?.data || "Login failed";
     }
 };
+
+export const getCurrentUser = async () => {
+    try {
+        const response = await apiClient.get('api/v1/aut/current-user');
+        if (response.status === 200) {
+            const user = response.data;
+            return user;
+        }
+    } catch (error) {
+        throw error.response?.data || "No user logged in";
+    }
+}
 
 export const register = async (registerData) => {
     try {
@@ -29,5 +41,5 @@ export const register = async (registerData) => {
 }
 
 export const logout = () => {
-    sessionStorage.clear();
+    //sessionStorage.clear();
 }

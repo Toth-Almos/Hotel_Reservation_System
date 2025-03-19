@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { login } from "../../services/UserService";
+import { useAuth } from "../../hooks/AuthContext";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -47,9 +48,7 @@ export default function LoginPage() {
                     required
                 />
 
-                <button
-                    type="submit"
-                >
+                <button type="submit">
                     Login
                 </button>
             </form>
