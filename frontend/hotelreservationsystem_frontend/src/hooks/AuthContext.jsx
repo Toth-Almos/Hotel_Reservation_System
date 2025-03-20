@@ -29,12 +29,13 @@ export const AuthProvider = ({ children }) => {
             if (user) {
                 setUser(user);
                 alert("Login successful: " + user.username);
+                return user;
             }
             else {
                 alert("Invalid credentials");
             }
         } catch {
-            alert("Invalid credentials");
+            alert("Something went wrong");
             setUser(null);
         }
     };

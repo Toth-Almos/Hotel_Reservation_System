@@ -16,7 +16,8 @@ export default function Header() {
                         <Link to='/browser'>Hotels</Link>
                         {user ? (
                             <>
-                                <li><button onClick={logout}>Logout</button></li>
+                                <Link to='/profile'>Profile</Link>
+                                <li><button onClick={logout} className={classes.logoutButton}>Logout</button></li>
                             </>
                         ) : (
                             <Link to="/login">Login</Link>

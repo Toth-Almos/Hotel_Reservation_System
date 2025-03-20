@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../hooks/AuthContext";
+import classes from "./loginPage.module.css";
+import { Link } from 'react-router'
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
@@ -11,13 +13,13 @@ export default function LoginPage() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setError(null); // Reset error message
+        setError(null);
 
         try {
-            const user = await login(username, password); // Call login function
+            const user = await login(username, password);
             if (user) {
                 console.log("Login successful:", user);
-                navigate("/"); // Redirect to dashboard or home
+                navigate("/");
             }
         } catch (err) {
             setError("Invalid username or password.");
@@ -26,13 +28,14 @@ export default function LoginPage() {
     };
 
     return (
-        <div>
-            <form onSubmit={handleLogin}>
-                <h2>Login</h2>
+        <div className={classes.loginContainer} >
+            <form className={classes.loginForm} onSubmit={handleLogin}>
+                <h3>Login if you already have an account</h3>
 
-                {error && <p>{error}</p>}
+                {error && <p className={classes.errorMessage} >{error}</p>}
 
                 <input
+                    className={classes.inputField}
                     type="text"
                     placeholder="Username"
                     value={username}
@@ -41,6 +44,7 @@ export default function LoginPage() {
                 />
 
                 <input
+                    className={classes.inputField}
                     type="password"
                     placeholder="Password"
                     value={password}
@@ -48,10 +52,13 @@ export default function LoginPage() {
                     required
                 />
 
-                <button type="submit">
+                <button className={classes.loginButton} type="submit">
                     Login
                 </button>
+
+                <div className={classes.registerContainer}>Don&apos;t have an account yet? </div>
+                <Link to='/register' className={classes.registerLink}>Register here</Link>
             </form>
-        </div>
+        </ div>
     );
 }
