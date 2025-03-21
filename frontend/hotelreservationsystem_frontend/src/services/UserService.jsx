@@ -29,17 +29,20 @@ export const getCurrentUser = async () => {
 
 export const register = async (registerData) => {
     try {
-        const { response } = await apiClient.post('api/v1/auth/register', {
+        const response = await apiClient.post('api/v1/auth/register', {
             username: registerData.username,
             email: registerData.email,
             password: registerData.password,
+            phoneNumber: registerData.phoneNumber,
+            address: registerData.address
         });
-        return response
+        return response.data;
     } catch (error) {
         throw error.response?.data || "Registration failed";
     }
 }
 
-export const logout = () => {
-    //sessionStorage.clear();
+export const logout = async () => {
+    const response = await apiClient.post('api/v1/auth/logout');
+    return response;
 }

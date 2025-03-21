@@ -41,12 +41,27 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        await userService.logout();
-        setUser(null);
+        try {
+            const response = await userService.logout();
+            if (response.status === 200) {
+                alert("Logged out succesfully!");
+                setUser(null);
+            }
+        } catch {
+            alert("Something went wrong");
+        }
     };
 
+    const register = async (registerData) => {
+        const user = await userService.register(registerData);
+        if (user) {
+            alert("Registration was successful");
+            return user;
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, register }}>
             {children}
         </AuthContext.Provider>
     );
