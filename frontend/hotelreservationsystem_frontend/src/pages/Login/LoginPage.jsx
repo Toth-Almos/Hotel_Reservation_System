@@ -16,14 +16,10 @@ export default function LoginPage() {
         setError(null);
 
         try {
-            const user = await login(username, password);
-            if (user) {
-                console.log("Login successful:", user);
-                navigate("/");
-            }
+            await login(username, password);
+            navigate("/");
         } catch (err) {
-            setError("Invalid username or password.");
-            console.error("Login error:", err);
+            setError(err.message);
         }
     };
 

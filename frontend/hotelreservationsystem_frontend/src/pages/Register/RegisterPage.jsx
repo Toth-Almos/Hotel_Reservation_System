@@ -10,10 +10,14 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [address, setAddress] = useState("");
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { register } = useAuth();
 
-    const handleRegistration = async () => {
+    const handleRegistration = async (e) => {
+        e.preventDefault();
+        setError(null);
+
         const registerData = {
             username,
             password,
@@ -22,13 +26,16 @@ export default function LoginPage() {
             address
         };
         try {
-            const user = await register(registerData)
-            if (user) {
-                alert("Successful Registration! Please check your email to validate your profile.");
-                navigate("/");
-            }
-        } catch {
-            alert("Registration error!");
+            await register(registerData);
+            alert("Your registration was successful! Please check your email to verify your account.");
+            setUsername("");
+            setPassword("");
+            setEmail("");
+            setPhoneNumber("");
+            setAddress("");
+            navigate("/login");
+        } catch (err) {
+            setError(err.message);
         }
     };
 
@@ -36,6 +43,8 @@ export default function LoginPage() {
         <div className={classes.registerContainer}>
             <form className={classes.registerForm} onSubmit={handleRegistration}>
                 <h3>Create an Account</h3>
+
+                {error && <p className={classes.errorMessage} >{error}</p>}
 
                 <input
                     className={classes.inputField}

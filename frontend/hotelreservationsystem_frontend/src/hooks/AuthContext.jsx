@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
                 setUser(userData);
             } catch (error) {
                 setUser(null);
-                console.error("No user logged in:", error);
+                console.error("AuthContext Current User Error:", error);
             }
         };
         fetchUser();
@@ -26,37 +26,29 @@ export const AuthProvider = ({ children }) => {
     const login = async (username, password) => {
         try {
             const user = await userService.login(username, password);
-            if (user) {
-                setUser(user);
-                alert("Login successful: " + user.username);
-                return user;
-            }
-            else {
-                alert("Invalid credentials");
-            }
-        } catch {
-            alert("Something went wrong");
-            setUser(null);
+            setUser(user);
+        } catch (error) {
+            console.error("AuthContext Login Error:", error);
+            throw error;
         }
     };
 
     const logout = async () => {
         try {
-            const response = await userService.logout();
-            if (response.status === 200) {
-                alert("Logged out succesfully!");
-                setUser(null);
-            }
-        } catch {
-            alert("Something went wrong");
+            await userService.logout();
+            setUser(null);
+        } catch (error) {
+            console.error("AuthContext Logout Error:", error);
+            throw error;
         }
     };
 
     const register = async (registerData) => {
-        const user = await userService.register(registerData);
-        if (user) {
-            alert("Registration was successful");
-            return user;
+        try {
+            await userService.register(registerData);
+        } catch (error) {
+            console.error("AuthContext Register Error:", error);
+            throw error;
         }
     }
 
