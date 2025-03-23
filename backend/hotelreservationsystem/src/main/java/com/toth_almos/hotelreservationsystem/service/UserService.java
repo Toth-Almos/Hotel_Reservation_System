@@ -1,5 +1,7 @@
 package com.toth_almos.hotelreservationsystem.service;
 
+import com.toth_almos.hotelreservationsystem.dto.CustomerDTO;
+
 public interface UserService {
-    //TODO
+    public CustomerDTO getCustomerDetails(Long customerId);
 }
