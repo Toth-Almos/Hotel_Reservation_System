@@ -1,5 +1,6 @@
 package com.toth_almos.hotelreservationsystem.controller;
 
+import com.toth_almos.hotelreservationsystem.dto.ChangePasswordRequest;
 import com.toth_almos.hotelreservationsystem.dto.LoginRequest;
 import com.toth_almos.hotelreservationsystem.dto.RegisterRequest;
 import com.toth_almos.hotelreservationsystem.dto.UserDTO;
@@ -44,5 +45,11 @@ public class AuthController {
     public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest request) {
         UserDTO userDTO = authService.register(request);
         return ResponseEntity.ok(userDTO);
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestParam String username, @RequestBody ChangePasswordRequest request) {
+        authService.changePassword(username, request);
+        return ResponseEntity.ok("Password changed successfully");
     }
 }

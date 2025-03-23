@@ -19,7 +19,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CustomerDTO getCustomerDetails(Long customerId) {
-        Customer customer = userRepository.findByCustomerId(customerId).orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + customerId));
+        Customer customer = userRepository.findByCustomerId(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + customerId));
         return new CustomerDTO(customer);
+    }
+
+    @Override
+    public CustomerDTO updateCustomerDetails(Long customerId, Customer customer) {
+        Customer existingCustomer = userRepository.findByCustomerId(customerId).orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + customerId));
+        existingCustomer.setUsername(customer.getUsername());
+        existingCustomer.setEmail(customer.getEmail());
+        existingCustomer.setPhoneNumber(customer.getPhoneNumber());
+        existingCustomer.setAddress(customer.getAddress());
+        userRepository.save(existingCustomer);
+        return new CustomerDTO(existingCustomer);
     }
 }

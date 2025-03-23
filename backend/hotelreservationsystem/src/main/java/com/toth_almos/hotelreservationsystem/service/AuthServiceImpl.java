@@ -1,5 +1,6 @@
 package com.toth_almos.hotelreservationsystem.service;
 
+import com.toth_almos.hotelreservationsystem.dto.ChangePasswordRequest;
 import com.toth_almos.hotelreservationsystem.dto.RegisterRequest;
 import com.toth_almos.hotelreservationsystem.dto.UserDTO;
 import com.toth_almos.hotelreservationsystem.model.Customer;
@@ -9,6 +10,7 @@ import com.toth_almos.hotelreservationsystem.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,5 +71,17 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(newUser);
         return new UserDTO(newUser.getId(), newUser.getUsername(), newUser.getRole());
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(String username, ChangePasswordRequest request) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with given username is not found"));
+        if(!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Old password is incorrect");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 }
