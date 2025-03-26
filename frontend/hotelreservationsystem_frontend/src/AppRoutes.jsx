@@ -4,6 +4,7 @@ import BrowserPage from './pages/Browser/BrowserPage'
 import HotelPage from "./pages/Hotel/HotelPage"
 import LoginPage from "./pages/Login/LoginPage"
 import RegisterPage from "./pages/Register/RegisterPage"
+import ProfilePage from "./pages/Profile/ProfilePage"
 
 export default function AppRoutes() {
     return (
@@ -13,6 +14,7 @@ export default function AppRoutes() {
             <Route path="/hotel/:id" element={<HotelPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
         </Routes>
     )
 }

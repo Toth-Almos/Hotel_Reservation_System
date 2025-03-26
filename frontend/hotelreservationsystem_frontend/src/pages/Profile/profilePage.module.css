@@ -1,0 +1,51 @@
+.profileContainer {
+    background: #EAE7DD;
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 500px;
+    margin: 2rem auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.profileTitle {
+    font-size: 1.8rem;
+    color: #634f3f;
+    margin-bottom: 1rem;
+}
+
+.profileDetails {
+    text-align: left;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profileDetails p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.editButton {
+    margin-top: 1rem;
+    padding: 0.5rem 1.5rem;
+    background-color: #634f3f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.editButton:hover {
+    background-color: #503d2f;
+}
+
+.loading,
+.error {
+    text-align: center;
+    font-size: 1.2rem;
+    color: red;
+    margin-top: 2rem;
+}

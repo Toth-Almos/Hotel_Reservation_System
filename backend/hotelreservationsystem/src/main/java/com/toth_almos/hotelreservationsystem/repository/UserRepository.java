@@ -14,6 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
     boolean existsByUsername(String username);
 
-    @Query("Select c FROM Customer WHERE c.id = :id")
+    @Query("SELECT c FROM Customer c WHERE c.id = :id")
     Optional<Customer> findByCustomerId(@Param("id") Long id);
 }

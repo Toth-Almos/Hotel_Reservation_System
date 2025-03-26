@@ -1,9 +1,15 @@
 import classes from './header.module.css';
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useAuth } from "../../hooks/AuthContext";
 
 export default function Header() {
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await logout();
+        navigate("/login");
+    };
 
     return (
         <header className={classes.header}>
@@ -17,7 +23,7 @@ export default function Header() {
                         {user ? (
                             <>
                                 <Link to='/profile'>Profile</Link>
-                                <li><button onClick={logout} className={classes.logoutButton}>Logout</button></li>
+                                <li><button onClick={handleLogout} className={classes.logoutButton}>Logout</button></li>
                             </>
                         ) : (
                             <Link to="/login">Login</Link>

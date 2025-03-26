@@ -39,3 +39,13 @@ export const logout = async () => {
         throw new Error(error.response?.data?.message || "Logout failed. Please try again.");
     }
 }
+
+export const getProfileDetails = async (userId) => {
+    try {
+        const response = await apiClient.get('api/v1/user/' + userId);
+        return response.data;
+    } catch (error) {
+        console.error("Profile detail error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Loading profile details failed. Please try again.");
+    }
+}
