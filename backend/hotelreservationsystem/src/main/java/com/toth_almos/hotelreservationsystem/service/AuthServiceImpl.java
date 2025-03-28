@@ -2,7 +2,6 @@ package com.toth_almos.hotelreservationsystem.service;
 
 import com.toth_almos.hotelreservationsystem.dto.ChangePasswordRequest;
 import com.toth_almos.hotelreservationsystem.dto.RegisterRequest;
-import com.toth_almos.hotelreservationsystem.dto.UserDTO;
 import com.toth_almos.hotelreservationsystem.model.Customer;
 import com.toth_almos.hotelreservationsystem.model.User;
 import com.toth_almos.hotelreservationsystem.model.UserRole;
@@ -10,7 +9,6 @@ import com.toth_almos.hotelreservationsystem.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,14 +26,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserDTO login(String username, String password, HttpSession session) {
+    public User login(String username, String password, HttpSession session) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with given username is not found"));
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         }
 
         session.setAttribute("user", user);
-        return new UserDTO(user.getId(), user.getUsername(), user.getRole());
+        return user;
     }
 
     @Override
@@ -44,17 +42,17 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserDTO getCurrentUser(HttpSession session) {
+    public User getCurrentUser(HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No user logged in");
         }
-        return new UserDTO(user.getId(), user.getUsername(), user.getRole());
+        return user;
     }
 
     @Override
     @Transactional
-    public UserDTO register(RegisterRequest request) {
+    public User register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already taken");
         }
@@ -67,10 +65,8 @@ public class AuthServiceImpl implements AuthService {
         newUser.setPhoneNumber(request.getPhoneNumber());
         newUser.setAddress(request.getAddress());
 
-        System.out.println(newUser.getAddress() + " - " + newUser.getPhoneNumber());
-
         userRepository.save(newUser);
-        return new UserDTO(newUser.getId(), newUser.getUsername(), newUser.getRole());
+        return newUser;
     }
 
     @Override

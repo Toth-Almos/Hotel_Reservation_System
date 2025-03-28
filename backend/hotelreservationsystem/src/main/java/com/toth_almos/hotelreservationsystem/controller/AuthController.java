@@ -4,6 +4,8 @@ import com.toth_almos.hotelreservationsystem.dto.ChangePasswordRequest;
 import com.toth_almos.hotelreservationsystem.dto.LoginRequest;
 import com.toth_almos.hotelreservationsystem.dto.RegisterRequest;
 import com.toth_almos.hotelreservationsystem.dto.UserDTO;
+import com.toth_almos.hotelreservationsystem.mapper.UserMapper;
+import com.toth_almos.hotelreservationsystem.model.User;
 import com.toth_almos.hotelreservationsystem.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
     private final HttpSession session;
+    private final UserMapper userMapper;
 
     @Autowired
-    public AuthController(AuthService authService, HttpSession session) {
+    public AuthController(AuthService authService, HttpSession session, UserMapper userMapper) {
         this.authService = authService;
         this.session = session;
+        this.userMapper = userMapper;
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody LoginRequest request) {
-        UserDTO userDTO = authService.login(request.getUsername(), request.getPassword(), session);
-        return ResponseEntity.ok(userDTO);
+        User user = authService.login(request.getUsername(), request.getPassword(), session);
+        return ResponseEntity.ok(userMapper.toDTO(user));
     }
 
     @PostMapping("/logout")
@@ -37,14 +41,14 @@ public class AuthController {
 
     @GetMapping("/current-user")
     public ResponseEntity<UserDTO> getCurrentUser() {
-        UserDTO userDTO = authService.getCurrentUser(session);
-        return ResponseEntity.ok(userDTO);
+        User user = authService.getCurrentUser(session);
+        return ResponseEntity.ok(userMapper.toDTO(user));
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest request) {
-        UserDTO userDTO = authService.register(request);
-        return ResponseEntity.ok(userDTO);
+        User user = authService.register(request);
+        return ResponseEntity.ok(userMapper.toDTO(user));
     }
 
     @PutMapping("/change-password")
