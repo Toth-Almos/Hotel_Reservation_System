@@ -49,3 +49,13 @@ export const getProfileDetails = async (userId) => {
         throw new Error(error.response?.data?.message || "Loading profile details failed. Please try again.");
     }
 }
+
+export const updateProfileDetails = async (userId, updatedData) => {
+    try {
+        const response = await apiClient.patch('api/v1/user/update-profile/' + userId, updatedData);
+        return response.data;
+    } catch (error) {
+        console.error("Profile update error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Failed to update profile. Please try again.");
+    }
+}

@@ -1,21 +1,45 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/AuthContext";
 import classes from "./profilePage.module.css";
-import { getProfileDetails } from "../../services/UserService";
+import { getProfileDetails, updateProfileDetails } from "../../services/UserService";
 
 export default function ProfilePage() {
     const { user } = useAuth();
     const [profileDetails, setProfileDetails] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        phoneNumber: "",
+        address: "",
+    });
 
     useEffect(() => {
         if (user) {
             getProfileDetails(user.id)
-                .then(data => setProfileDetails(data))
+                .then(data => {
+                    setProfileDetails(data);
+                    setFormData(data);
+                })
                 .catch(error => console.error("Error fetching profile:", error))
                 .finally(() => setLoading(false));
         }
     }, [user]);
+
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+
+    const handleSave = async () => {
+        try {
+            const updatedData = await updateProfileDetails(user.id, formData);
+            setProfileDetails(updatedData);
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Error updating profile:", error);
+        }
+    }
 
     if (loading) {
         return <div className={classes.loading}>Loading profile...</div>;
@@ -29,14 +53,56 @@ export default function ProfilePage() {
         <div className={classes.profileContainer}>
             <h2 className={classes.profileTitle}>Your Profile</h2>
 
-            <div className={classes.profileDetails}>
-                <p><strong>Username:</strong> {profileDetails.username}</p>
-                <p><strong>Email:</strong> {profileDetails.email}</p>
-                <p><strong>Phone:</strong> {profileDetails.phoneNumber}</p>
-                <p><strong>Address:</strong> {profileDetails.address}</p>
-            </div>
+            {!isEditing ? (
+                <>
+                    <div className={classes.profileDetails}>
+                        <p><strong>Username:</strong> {profileDetails.username}</p>
+                        <p><strong>Email:</strong> {profileDetails.email}</p>
+                        <p><strong>Phone:</strong> {profileDetails.phoneNumber}</p>
+                        <p><strong>Address:</strong> {profileDetails.address}</p>
+                    </div>
+                    <button className={classes.editButton} onClick={() => setIsEditing(true)}>
+                        Edit Profile
+                    </button>
+                </>
+            ) : (
+                <div className={classes.editForm}>
+                    <label>Username:</label>
+                    <input
+                        type="text"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleInputChange}
+                    />
 
-            <button className={classes.editButton}>Edit Profile</button>
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                    />
+
+                    <label>Phone:</label>
+                    <input
+                        type="text"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleInputChange}
+                    />
+
+                    <label>Address:</label>
+                    <input
+                        type="text"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleInputChange}
+                    />
+
+                    <button className={classes.saveButton} onClick={handleSave}>Save</button>
+                    <button className={classes.cancelButton} onClick={() => setIsEditing(false)}>Cancel</button>
+                </div>
+            )}
         </div>
     )
 }
