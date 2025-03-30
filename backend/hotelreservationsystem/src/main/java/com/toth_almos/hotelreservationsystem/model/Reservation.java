@@ -27,6 +27,7 @@ public class Reservation {
 
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+    private LocalDate reservationDate;
     private double totalCost;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)

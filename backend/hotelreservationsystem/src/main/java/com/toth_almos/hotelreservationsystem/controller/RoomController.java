@@ -13,7 +13,6 @@ import java.util.List;
 @RequestMapping("api/v1/rooms")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RoomController {
-
     private final RoomService roomService;
     private final RoomMapper roomMapper;
 
