@@ -1,6 +1,5 @@
 package com.toth_almos.hotelreservationsystem.service;
 
-import com.toth_almos.hotelreservationsystem.dto.ReservationItemRequest;
 import com.toth_almos.hotelreservationsystem.dto.ReservationRequest;
 import com.toth_almos.hotelreservationsystem.model.*;
 import com.toth_almos.hotelreservationsystem.repository.*;
@@ -42,17 +41,26 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation createReservation(ReservationRequest reservationRequest) {
+        if(reservationRequest.getCheckInDate().isEqual(reservationRequest.getCheckOutDate())) {
+            throw new IllegalArgumentException("Check-in and Check-out date can not be on the same day.");
+        }
+
         long daysBetween = ChronoUnit.DAYS.between(reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate());
 
         if(daysBetween > 30) {
             throw new IllegalArgumentException("Reservations cannot exceed 30 days.");
         }
-        if(ChronoUnit.DAYS.between(reservationRequest.getCheckInDate(), LocalDate.now()) > 4) {
-            throw new IllegalArgumentException("You have to make a reservation before 4 days of the check in date.");
+        if(ChronoUnit.DAYS.between(LocalDate.now(), reservationRequest.getCheckInDate()) <= 4) {
+            throw new IllegalArgumentException("You have to make a reservation before 4 days of the check in date at least.");
         }
 
         Customer customer = userRepository.findByCustomerId(reservationRequest.getCustomerId()).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
         Hotel hotel = hotelRepository.findById(reservationRequest.getHotelId()).orElseThrow(() -> new EntityNotFoundException("Hotel not found"));
+
+        boolean hasDateConflict = reservationRepository.existsByCustomerIdAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqual(customer.getId(), reservationRequest.getCheckOutDate(), reservationRequest.getCheckInDate());
+        if(hasDateConflict) {
+            throw new IllegalStateException("You already have an active reservation within the selected date range.");
+        }
 
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);
