@@ -61,9 +61,17 @@ export default function ProfilePage() {
                         <p><strong>Phone:</strong> {profileDetails.phoneNumber}</p>
                         <p><strong>Address:</strong> {profileDetails.address}</p>
                     </div>
-                    <button className={classes.editButton} onClick={() => setIsEditing(true)}>
-                        Edit Profile
-                    </button>
+                    <div className={classes.buttonContainer}>
+                        <button className={classes.profileButton}>
+                            My Reservation History
+                        </button>
+                        <button className={classes.profileButton}>
+                            Cancel Active Reservations
+                        </button>
+                        <button className={classes.profileButton} onClick={() => setIsEditing(true)}>
+                            Edit Profile
+                        </button>
+                    </div>
                 </>
             ) : (
                 <div className={classes.editForm}>

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -41,7 +42,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation createReservation(ReservationRequest reservationRequest) {
-        if(ChronoUnit.DAYS.between(reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate()) > 30) {
+        long daysBetween = ChronoUnit.DAYS.between(reservationRequest.getCheckInDate(), reservationRequest.getCheckOutDate());
+
+        if(daysBetween > 30) {
             throw new IllegalArgumentException("Reservations cannot exceed 30 days.");
         }
         if(ChronoUnit.DAYS.between(reservationRequest.getCheckInDate(), LocalDate.now()) > 4) {
@@ -51,19 +54,14 @@ public class ReservationServiceImpl implements ReservationService {
         Customer customer = userRepository.findByCustomerId(reservationRequest.getCustomerId()).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
         Hotel hotel = hotelRepository.findById(reservationRequest.getHotelId()).orElseThrow(() -> new EntityNotFoundException("Hotel not found"));
 
-        double totalCost = 0;
-        for(ReservationItemRequest item : reservationRequest.getReservationItemRequests()) {
-            totalCost += (item.getPricePerNight() * item.getNumberOfRooms());
-        }
-
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);
         reservation.setHotel(hotel);
         reservation.setCheckInDate(reservationRequest.getCheckInDate());
         reservation.setCheckOutDate(reservationRequest.getCheckOutDate());
         reservation.setReservationDate(LocalDate.now());
-        reservation.setTotalCost(totalCost);
 
+        AtomicReference<Double> totalCost = new AtomicReference<>(0.0);
         List<ReservationItem> reservationItems = reservationRequest.getReservationItemRequests().stream()
                 .map(itemRequest -> {
                     Room room = roomRepository.findById(itemRequest.getRoomId()).orElseThrow(() -> new EntityNotFoundException("Room not found"));
@@ -72,9 +70,14 @@ public class ReservationServiceImpl implements ReservationService {
                     item.setReservation(reservation);
                     item.setRoom(room);
                     item.setNumberOfRoomsReserved(itemRequest.getNumberOfRooms());
+
+                    double itemCost = room.getPricePerNight() * itemRequest.getNumberOfRooms() * daysBetween;
+                    totalCost.updateAndGet(v -> v + itemCost);
+
                     return item;
                 })
                 .toList();
+        reservation.setTotalCost(totalCost.get());
         reservation.setReservationItems(reservationItems);
 
         return reservationRepository.save(reservation);

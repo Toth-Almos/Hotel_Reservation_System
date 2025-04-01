@@ -2,14 +2,20 @@ import { useParams } from 'react-router';
 import classes from './hotelPage.module.css'
 import { useEffect, useState } from 'react';
 import { getById } from '../../services/HotelService';
+import { useNavigate } from 'react-router';
 
 export default function HotelPage() {
     const [hotel, setHotel] = useState();
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getById(id).then(setHotel);
     }, [id])
+
+    const handleBookRoom = () => {
+        navigate(`/reserve/${id}`, { state: { hotel } });
+    }
 
     if (!hotel) return <p>Loading...</p>;
 
@@ -39,7 +45,7 @@ export default function HotelPage() {
                                     <h3>{room.type}</h3>
                                     <p>Capacity: {room.maxGuests} guests</p>
                                     <p>Price: {room.pricePerNight}€ / night</p>
-                                    <button className={classes.bookRoom}>Book Room</button>
+                                    <button className={classes.bookRoom} onClick={handleBookRoom}>Book Room</button>
                                 </div>
                             </li>
                         ))}

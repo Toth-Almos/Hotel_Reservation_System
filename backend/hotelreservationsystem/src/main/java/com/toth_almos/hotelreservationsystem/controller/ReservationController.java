@@ -25,9 +25,12 @@ public class ReservationController {
     }
 
     @PostMapping("/create-reservation")
-    public ResponseEntity<ReservationDTO> createReservation(ReservationRequest reservationRequest) {
+    public ResponseEntity<ReservationDTO> createReservation(@RequestBody ReservationRequest reservationRequest) {
         Reservation reservation = reservationService.createReservation(reservationRequest);
-        return ResponseEntity.ok(reservationMapper.toDTO(reservation));
+        ReservationDTO resDTO = reservationMapper.toDTO(reservation);
+        System.out.println("Customer ID: " + resDTO.getCustomerId());
+        System.out.println("Hotel ID: " + resDTO.getHotelId());
+        return ResponseEntity.ok(resDTO);
     }
 
     @DeleteMapping("/delete-reservation/{id}")
