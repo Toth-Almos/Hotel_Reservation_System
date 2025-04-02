@@ -44,4 +44,10 @@ public class ReservationController {
         List<Reservation> reservations = reservationService.findByCustomerId(id);
         return ResponseEntity.ok(reservationMapper.toDTOList(reservations));
     }
+
+    @GetMapping("/get-active-reservations/{id}")
+    public ResponseEntity<List<ReservationDTO>> getAllActiveReservationsForCustomer(@PathVariable("id") Long id) {
+        List<Reservation> reservations = reservationService.findActiveReservationsByCustomerId(id);
+        return ResponseEntity.ok(reservationMapper.toDTOList(reservations));
+    }
 }

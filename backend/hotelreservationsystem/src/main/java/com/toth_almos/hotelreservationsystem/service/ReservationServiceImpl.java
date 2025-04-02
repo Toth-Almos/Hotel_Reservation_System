@@ -6,6 +6,7 @@ import com.toth_almos.hotelreservationsystem.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -39,6 +40,12 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.findByCustomerId(id);
     }
 
+    @Override
+    public List<Reservation> findActiveReservationsByCustomerId(Long id) {
+        return reservationRepository.findActiveReservationsByCustomerId(id, LocalDate.now());
+    }
+
+    @Transactional
     @Override
     public Reservation createReservation(ReservationRequest reservationRequest) {
         if(reservationRequest.getCheckInDate().isEqual(reservationRequest.getCheckOutDate())) {
@@ -91,9 +98,15 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    @Transactional
     @Override
     public void deleteReservation(Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
+
+        if(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getCheckInDate()) <= 4) {
+            throw new IllegalStateException("Reservations can only be canceled before 4 days at maximum.");
+        }
+
         for (ReservationItem item : reservation.getReservationItems()) {
             reservationItemRepository.delete(item);
         }
