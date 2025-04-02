@@ -25,9 +25,16 @@ public class Reservation {
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
+    @Column(nullable = false)
     private LocalDate checkInDate;
+
+    @Column(nullable = false)
     private LocalDate checkOutDate;
+
+    @Column(nullable = false)
     private LocalDate reservationDate;
+
+    @Column(nullable = false)
     private double totalCost;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)

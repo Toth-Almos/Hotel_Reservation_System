@@ -21,7 +21,12 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomType type;
 
+    @Column(nullable = false)
     private int maxGuests;
+
+    @Column(nullable = false)
     private int totalCount;
+
+    @Column(nullable = false)
     private double pricePerNight;
 }

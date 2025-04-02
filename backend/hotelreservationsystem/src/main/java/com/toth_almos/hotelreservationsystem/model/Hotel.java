@@ -16,10 +16,19 @@ public class Hotel {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private int star;
+
+    @Column(nullable = false)
     private String country;
+
+    @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false)
     private String address;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)

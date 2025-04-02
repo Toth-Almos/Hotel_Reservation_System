@@ -22,6 +22,9 @@ public class Review {
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
+    @Column(nullable = false)
     private int rating;
+
+    @Column(nullable = false)
     private String comment;
 }

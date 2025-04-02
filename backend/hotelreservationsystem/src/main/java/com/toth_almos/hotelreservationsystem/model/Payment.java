@@ -20,7 +20,12 @@ public class Payment {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(nullable = false)
     private double amount;
+
+    @Column(nullable = false)
     private LocalDate paymentDate;
+
+    @Column(nullable = false)
     private String status;
 }
