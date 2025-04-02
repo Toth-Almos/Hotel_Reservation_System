@@ -1,0 +1,63 @@
+.container {
+    background: #EAE7DD;
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.title {
+    font-size: 1.8rem;
+    color: #634f3f;
+    margin-bottom: 1.5rem;
+}
+
+.noReservations {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.reservationCard {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.reservationCard h2 {
+    font-size: 1.5rem;
+    color: #634f3f;
+    margin-bottom: 0.5rem;
+}
+
+.reservationCard p {
+    font-size: 1rem;
+    color: #333;
+    margin: 0.3rem 0;
+}
+
+.rooms h3 {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: #634f3f;
+}
+
+.rooms ul {
+    list-style: none;
+    padding: 0;
+}
+
+.rooms li {
+    font-size: 1rem;
+    color: #444;
+}

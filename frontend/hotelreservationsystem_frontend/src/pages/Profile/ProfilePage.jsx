@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/AuthContext";
 import classes from "./profilePage.module.css";
 import { getProfileDetails, updateProfileDetails } from "../../services/UserService";
+import { useNavigate } from "react-router";
 
 export default function ProfilePage() {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [profileDetails, setProfileDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
@@ -62,7 +64,7 @@ export default function ProfilePage() {
                         <p><strong>Address:</strong> {profileDetails.address}</p>
                     </div>
                     <div className={classes.buttonContainer}>
-                        <button className={classes.profileButton}>
+                        <button className={classes.profileButton} onClick={() => navigate(`/reservation-history`)}>
                             My Reservation History
                         </button>
                         <button className={classes.profileButton}>
