@@ -67,7 +67,7 @@ export default function ProfilePage() {
                         <button className={classes.profileButton} onClick={() => navigate(`/reservation-history`)}>
                             My Reservation History
                         </button>
-                        <button className={classes.profileButton}>
+                        <button className={classes.profileButton} onClick={() => navigate(`/reservation-cancel`)}>
                             Cancel Active Reservations
                         </button>
                         <button className={classes.profileButton} onClick={() => setIsEditing(true)}>

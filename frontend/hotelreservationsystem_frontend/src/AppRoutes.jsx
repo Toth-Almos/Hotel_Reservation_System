@@ -7,6 +7,7 @@ import RegisterPage from "./pages/Register/RegisterPage"
 import ProfilePage from "./pages/Profile/ProfilePage"
 import ReservationPage from "./pages/Reservation/ReservationPage"
 import ReservationHistoryPage from "./pages/ReservationHistory/ReservationHistoryPage"
+import ReservationCancelPage from "./pages/ReservationCancel/ReservationCancelPage"
 
 export default function AppRoutes() {
     return (
@@ -19,6 +20,7 @@ export default function AppRoutes() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/reserve/:id" element={<ReservationPage />} />
             <Route path="/reservation-history" element={<ReservationHistoryPage />} />
+            <Route path="/reservation-cancel" element={<ReservationCancelPage />} />
         </Routes>
     )
 }
