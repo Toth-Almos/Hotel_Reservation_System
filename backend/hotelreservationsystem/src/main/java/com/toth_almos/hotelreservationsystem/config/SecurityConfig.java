@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/login", "/api/v1/auth/logout", "/api/v1/auth/current-user", "/api/v1/auth/register", "/api/v1/auth/change-password").permitAll()
                         .requestMatchers("/api/v1/user/{customerId}", "/api/v1/user/update-profile/{customerId}").permitAll()
                         .requestMatchers("/api/v1/reservation/**").permitAll()
+                        .requestMatchers("/api/v1/review/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated() // All other routes require authentication
                 )

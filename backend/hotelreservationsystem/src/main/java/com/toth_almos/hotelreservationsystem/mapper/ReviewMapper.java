@@ -15,11 +15,13 @@ public interface ReviewMapper {
     ReviewMapper INSTANCE = Mappers.getMapper(ReviewMapper.class);
 
     @Mapping(source = "hotel.id", target = "hotelId")
+    @Mapping(source = "hotel.name", target = "hotelName")
     @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "customer.username", target = "customerName")
     ReviewDTO toDTO(Review review);
 
-    @Mapping(source = "hotelId", target = "hotel.id")
-    @Mapping(source = "customerId", target = "customer.id")
+    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "hotel", ignore = true)
     Review toEntity(ReviewDTO reviewDTO);
 
     List<ReviewDTO> toDTOList(List<Review> reviews);
