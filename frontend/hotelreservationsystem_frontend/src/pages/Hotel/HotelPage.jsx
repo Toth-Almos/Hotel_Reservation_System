@@ -3,6 +3,7 @@ import classes from './hotelPage.module.css'
 import { useEffect, useState } from 'react';
 import { getById } from '../../services/HotelService';
 import { useNavigate } from 'react-router';
+import HotelReviews from '../../components/HotelReviews/HotelReviews';
 
 export default function HotelPage() {
     const [hotel, setHotel] = useState();
@@ -53,6 +54,10 @@ export default function HotelPage() {
                 ) : (
                     <p>No available rooms at the moment.</p>
                 )}
+            </div>
+
+            <div>
+                <HotelReviews hotelId={id} />
             </div>
         </div>
     )
