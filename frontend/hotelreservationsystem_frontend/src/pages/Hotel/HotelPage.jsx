@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { getById } from '../../services/HotelService';
 import { useNavigate } from 'react-router';
 import HotelReviews from '../../components/HotelReviews/HotelReviews';
+import ReviewForm from '../../components/ReviewForm/ReviewForm';
 
 export default function HotelPage() {
     const [hotel, setHotel] = useState();
@@ -58,6 +59,9 @@ export default function HotelPage() {
 
             <div>
                 <HotelReviews hotelId={id} />
+            </div>
+            <div>
+                <ReviewForm hotelId={hotel.id} />
             </div>
         </div>
     )

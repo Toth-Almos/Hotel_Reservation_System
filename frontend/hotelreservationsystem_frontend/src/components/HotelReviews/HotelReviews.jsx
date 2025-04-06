@@ -18,13 +18,13 @@ export default function HotelReviews({ hotelId }) {
 
     return (
         <div className={classes.reviewContainer}>
-            <h2>Customer Reviews</h2>
+            <h3>Customer Reviews</h3>
             <ul className={classes.reviewList}>
                 {reviews.map((review) => (
                     <li key={review.id} className={classes.reviewItem}>
                         <p className={classes.reviewer}><strong>{review.customerName}</strong></p>
-                        <p className={classes.rating}>Rating: {Array(review.rating).fill("⭐").join("")}</p>
-                        <p className={classes.comment}>{review.comment}</p>
+                        <p className={classes.rating}>Given rating: {Array(review.rating).fill("⭐").join("")}</p>
+                        <p className={classes.comment}>&quot;{review.comment}&quot;</p>
                     </li>
                 ))}
             </ul>

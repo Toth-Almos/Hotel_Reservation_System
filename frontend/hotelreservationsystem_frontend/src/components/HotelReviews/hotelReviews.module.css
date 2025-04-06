@@ -2,7 +2,7 @@
     margin-top: 2rem;
     padding: 1.5rem;
     border-top: 1px solid #ccc;
-    background-color: #fafafa;
+    background-color: #EAE7DD;
     border-radius: 10px;
 }
 
@@ -13,7 +13,8 @@
 
 .reviewItem {
     padding: 1rem;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #bebbb3;
+    border-top: 2px solid #bebbb3;
 }
 
 .reviewer {
@@ -23,7 +24,7 @@
 }
 
 .rating {
-    color: #f5a623;
+    color: black;
     margin-bottom: 0.5rem;
 }
 
