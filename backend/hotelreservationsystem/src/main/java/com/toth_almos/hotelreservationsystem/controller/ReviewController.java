@@ -25,7 +25,7 @@ public class ReviewController {
     }
 
     @PostMapping("/create-review")
-    public ResponseEntity<ReviewDTO> createReview(ReviewRequest request) {
+    public ResponseEntity<ReviewDTO> createReview(@RequestBody ReviewRequest request) {
         Review review = this.reviewService.createReview(request);
         return ResponseEntity.ok(reviewMapper.toDTO(review));
     }
