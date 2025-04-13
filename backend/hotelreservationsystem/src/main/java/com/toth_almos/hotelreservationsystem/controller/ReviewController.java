@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/review")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class ReviewController {
     private final ReviewService reviewService;
     private final ReviewMapper reviewMapper;

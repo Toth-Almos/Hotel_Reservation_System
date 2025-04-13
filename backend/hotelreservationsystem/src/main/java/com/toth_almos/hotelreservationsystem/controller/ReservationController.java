@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/reservation")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class ReservationController {
     private final ReservationService reservationService;
     private final ReservationMapper reservationMapper;
