@@ -12,7 +12,7 @@ export const login = async (username, password) => {
 
 export const getCurrentUser = async () => {
     try {
-        const response = await apiClient.get('api/v1/aut/current-user');
+        const response = await apiClient.get('api/v1/auth/current-user');
         return response.data;
     } catch (error) {
         console.error("User fetch error:", error.response?.data || error.message);
