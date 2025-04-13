@@ -8,6 +8,9 @@ import ProfilePage from "./pages/Profile/ProfilePage"
 import ReservationPage from "./pages/Reservation/ReservationPage"
 import ReservationHistoryPage from "./pages/ReservationHistory/ReservationHistoryPage"
 import ReservationCancelPage from "./pages/ReservationCancel/ReservationCancelPage"
+import AdminPage from "./pages/Admin/AdminPage"
+import AdminRoute from "./components/AdminRoute"
+import UnauthorizedPage from "./pages/Unauthorized/UnauthorizedPage"
 
 export default function AppRoutes() {
     return (
@@ -21,6 +24,8 @@ export default function AppRoutes() {
             <Route path="/reserve/:id" element={<ReservationPage />} />
             <Route path="/reservation-history" element={<ReservationHistoryPage />} />
             <Route path="/reservation-cancel" element={<ReservationCancelPage />} />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route path="/admin" element={<AdminRoute> <AdminPage /> </AdminRoute>} />
         </Routes>
     )
 }
