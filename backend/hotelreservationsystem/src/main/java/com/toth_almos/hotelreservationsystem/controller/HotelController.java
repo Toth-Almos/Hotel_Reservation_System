@@ -1,6 +1,7 @@
 package com.toth_almos.hotelreservationsystem.controller;
 
 import com.toth_almos.hotelreservationsystem.dto.HotelDTO;
+import com.toth_almos.hotelreservationsystem.dto.HotelRequest;
 import com.toth_almos.hotelreservationsystem.mapper.HotelMapper;
 import com.toth_almos.hotelreservationsystem.model.Hotel;
 import com.toth_almos.hotelreservationsystem.service.HotelService;
@@ -34,5 +35,17 @@ public class HotelController {
         List<Hotel> hotels = hotelService.findAll();
         List<HotelDTO> hotelDTOs= hotelMapper.toDTOList(hotels);
         return hotelDTOs.isEmpty() ? null : hotelDTOs;
+    }
+
+    @PostMapping("/create-hotel")
+    public HotelDTO createHotel(@RequestBody HotelRequest request) {
+        Hotel hotel = hotelService.createHotel(request);
+        return hotelMapper.toDTO(hotel);
+    }
+
+    @PatchMapping("/update-hotel/{id}")
+    public HotelDTO updateHotel(@PathVariable("id") Long id, @RequestBody HotelRequest request) {
+        Hotel hotel = hotelService.updateHotel(id, request);
+        return hotelMapper.toDTO(hotel);
     }
 }

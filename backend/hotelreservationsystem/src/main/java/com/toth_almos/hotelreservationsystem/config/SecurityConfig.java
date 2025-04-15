@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/hotels", "/api/v1/hotels/{id}").permitAll()
+                        .requestMatchers("/api/v1/hotels/**").permitAll()
                         .requestMatchers("/api/v1/rooms/{id}", "/api/v1/rooms/hotel/rooms/{id}").permitAll()
                         .requestMatchers("/api/v1/auth/login", "/api/v1/auth/logout", "/api/v1/auth/current-user", "/api/v1/auth/register", "/api/v1/auth/change-password").permitAll()
                         .requestMatchers("/api/v1/user/{customerId}", "/api/v1/user/update-profile/{customerId}").permitAll()
