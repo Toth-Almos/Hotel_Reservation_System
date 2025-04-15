@@ -19,14 +19,19 @@ export default function Header() {
                 </Link>
                 <nav>
                     <ul>
-                        <Link to='/browser'>Hotels</Link>
+                        <li><Link to='/browser'>Hotels</Link></li>
                         {user ? (
                             <>
-                                <Link to='/profile'>Profile</Link>
-                                <li><button onClick={handleLogout} className={classes.logoutButton}>Logout</button></li>
+                                {user.role === "ADMIN" ? (
+                                    <li> <Link to='/admin'>Admin Panel</Link> </li>
+                                ) : (
+                                    <li> <Link to='/profile'>Profile</Link> </li>
+                                )}
+
+                                <li> <button onClick={handleLogout} className={classes.logoutButton}>Logout</button> </li>
                             </>
                         ) : (
-                            <Link to="/login">Login</Link>
+                            <li> <Link to="/login">Login</Link> </li>
                         )}
                     </ul>
                 </nav>

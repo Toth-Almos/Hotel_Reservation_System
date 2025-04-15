@@ -33,7 +33,7 @@ export default function ReservationCancelPage() {
             <h1 className={classes.title}>Your Active Reservations</h1>
 
             {reservations.length === 0 ? (
-                <p className={classes.noReservations}>You have no active reservations.</p>
+                <p className={classes.noReservations}>You don not have any active reservations.</p>
             ) : (
                 <ul className={classes.reservationList}>
                     {reservations.map((reservation) => (

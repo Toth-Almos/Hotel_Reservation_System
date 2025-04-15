@@ -1,0 +1,219 @@
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 0;
+    list-style: none;
+}
+
+.list li {
+    background: #EAE7DD;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.list li:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
+}
+
+.list li a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 3px solid #ddd;
+}
+
+.content {
+    padding: 18px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hotelNameStar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.hotelStar {
+    font-size: 0.9rem;
+}
+
+.hotelLocation {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: #666;
+}
+
+.editButtonHolder {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+.editButton,
+.roomButton {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.editButton {
+    background-color: #004d7a;
+    color: white;
+}
+
+.editButton:hover {
+    background-color: #006494;
+    transform: translateY(-2px);
+}
+
+.roomButton {
+    background-color: #437c90;
+    color: white;
+}
+
+.roomButton:hover {
+    background-color: #6099a8;
+    transform: translateY(-2px);
+}
+
+/* MODAL OVERLAY for Edit Form */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.editForm {
+    background-color: #EAE7DD;
+    padding: 24px;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 1001;
+}
+
+.editForm label {
+    font-weight: 600;
+    color: #333;
+}
+
+.editForm input,
+.editForm select,
+.editForm textarea {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+.editForm input:focus,
+.editForm select:focus,
+.editForm textarea:focus {
+    border-color: #004d7a;
+    outline: none;
+}
+
+.editFormButtonRow {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.saveButton,
+.cancelButton {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.saveButton {
+    background-color: #3a7d44;
+    color: white;
+}
+
+.saveButton:hover {
+    background-color: #4caf50;
+    transform: translateY(-2px);
+}
+
+.cancelButton {
+    background-color: #b33939;
+    color: white;
+}
+
+.cancelButton:hover {
+    background-color: #e74c3c;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .list {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .list {
+        grid-template-columns: 1fr;
+    }
+
+    .editForm {
+        max-width: 90%;
+    }
+}

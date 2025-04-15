@@ -18,7 +18,7 @@ export default function ReservationHistoryPage() {
             <h1 className={classes.title}>My Reservation History</h1>
 
             {reservations.length === 0 ? (
-                <p className={classes.noReservations}>You have no past reservations.</p>
+                <p className={classes.noReservations}>You do not have any past reservations.</p>
             ) : (
                 <ul className={classes.list}>
                     {reservations.map((reservation) => (

@@ -21,7 +21,7 @@
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     border: none;
-    background-color: #99775C;
+    background-color: #EAE7DD;
     color: black;
     border-radius: 8px;
     cursor: pointer;
@@ -29,5 +29,5 @@
 }
 
 .button:hover {
-    background-color: #6b5441;
+    background-color: #a19b8c;
 }
