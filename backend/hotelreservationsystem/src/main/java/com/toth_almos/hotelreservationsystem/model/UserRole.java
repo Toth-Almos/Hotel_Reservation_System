@@ -1,6 +1,6 @@
 package com.toth_almos.hotelreservationsystem.model;
 
 public enum UserRole {
-    CUSTOMER,
-    ADMIN
+    ROLE_CUSTOMER,
+    ROLE_ADMIN
 }

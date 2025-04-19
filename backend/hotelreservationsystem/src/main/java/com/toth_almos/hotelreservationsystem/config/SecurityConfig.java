@@ -27,13 +27,15 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/hotels/**").permitAll()
-                        .requestMatchers("/api/v1/rooms/{id}", "/api/v1/rooms/hotel/rooms/{id}").permitAll()
+                        .requestMatchers("/api/v1/hotels", "api/v1/hotels/{id}" ).permitAll()
+                        .requestMatchers("/api/v1/rooms/{id}", "/api/v1/rooms/get-by-hotel/{id}").permitAll()
                         .requestMatchers("/api/v1/auth/login", "/api/v1/auth/logout", "/api/v1/auth/current-user", "/api/v1/auth/register", "/api/v1/auth/change-password").permitAll()
-                        .requestMatchers("/api/v1/user/{customerId}", "/api/v1/user/update-profile/{customerId}").permitAll()
-                        .requestMatchers("/api/v1/reservation/**").permitAll()
-                        .requestMatchers("/api/v1/review/**").permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/user/{customerId}", "/api/v1/user/update-profile/{customerId}").hasRole("CUSTOMER")
+                        .requestMatchers("/api/v1/reservation/**").hasRole("CUSTOMER")
+                        .requestMatchers("/api/v1/review/get-hotel-reviews/{hotelId}", "/api/v1/review/get-customer-reviews/{customerId}").permitAll()
+                        .requestMatchers("/api/v1/review/delete-review/{id}", "/api/v1/review/create-review").hasRole("CUSTOMER")
+                        .requestMatchers("/api/v1/hotels/create-hotel", "api/v1/hotels/update-hotel/{id}").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/rooms/create-room", "/api/v1/rooms/update/{id}", "/api/v1/rooms/delete/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated() // All other routes require authentication
                 )
                 .exceptionHandling(exception -> exception
