@@ -12,6 +12,7 @@ import AdminPage from "./pages/Admin/AdminPage"
 import AdminRoute from "./components/AdminRoute"
 import UnauthorizedPage from "./pages/Unauthorized/UnauthorizedPage"
 import AdminHotelPage from "./pages/AdminHotel/AdminHotelPage"
+import AdminRoomsPage from "./pages/AdminRooms/AdminRoomsPage"
 
 export default function AppRoutes() {
     return (
@@ -28,6 +29,7 @@ export default function AppRoutes() {
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route path="/admin" element={<AdminRoute> <AdminPage /> </AdminRoute>} />
             <Route path="/admin-hotels" element={<AdminRoute> <AdminHotelPage /> </AdminRoute>} />
+            <Route path="/admin-rooms/:hotelId" element={<AdminRoute> <AdminRoomsPage /> </AdminRoute>} />
         </Routes>
     )
 }

@@ -22,7 +22,7 @@ export default function Header() {
                         <li><Link to='/browser'>Hotels</Link></li>
                         {user ? (
                             <>
-                                {user.role === "ADMIN" ? (
+                                {user.role === "ROLE_ADMIN" ? (
                                     <li> <Link to='/admin'>Admin Panel</Link> </li>
                                 ) : (
                                     <li> <Link to='/profile'>Profile</Link> </li>

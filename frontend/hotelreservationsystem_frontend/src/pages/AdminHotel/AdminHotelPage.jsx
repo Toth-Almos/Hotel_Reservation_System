@@ -58,7 +58,7 @@ export default function AdminHotelPage() {
                             </div>
                             <div className={classes.editButtonHolder}>
                                 <button onClick={() => handleEditClick(hotel)} className={classes.editButton}>Edit Hotel</button>
-                                <Link to={`/adminRooms/${hotel.id}`}>
+                                <Link to={`/admin-rooms/${hotel.id}`}>
                                     <button className={classes.roomButton}>View Rooms</button>
                                 </Link>
                             </div>

@@ -29,3 +29,43 @@ export const createHotel = async (hotelData) => {
         throw new Error(error.response?.data?.message || "Create failed");
     }
 };
+
+export const getRoomsByHotelId = async (hotelId) => {
+    try {
+        const response = await apiClient.get(`/api/v1/rooms/get-by-hotel/${hotelId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Rooms fetching error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Fetch failed");
+    }
+};
+
+export const updateRoom = async (roomId, roomData) => {
+    try {
+        const response = await apiClient.patch(`/api/v1/rooms/update/${roomId}`, roomData);
+        return response.data;
+    } catch (error) {
+        console.error("Rooms update error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Update failed");
+    }
+};
+
+export const createRoom = async (roomData) => {
+    try {
+        const response = await apiClient.post(`/api/v1/rooms/create-room`, roomData);
+        return response.data;
+    } catch (error) {
+        console.error("Rooms creation error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Create failed");
+    }
+};
+
+export const deleteRoom = async (roomdId) => {
+    try {
+        const response = await apiClient.delete(`/api/v1/rooms/create-room/${roomdId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Rooms creation error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Create failed");
+    }
+};

@@ -25,7 +25,7 @@ export default function AdminRoute({ children }) {
         return <Navigate to="/login" />;
     }
 
-    if (!user.role.includes("ADMIN")) {
+    if (!user.role.includes("ROLE_ADMIN")) {
         return <Navigate to="/unauthorized" />;
     }
 
