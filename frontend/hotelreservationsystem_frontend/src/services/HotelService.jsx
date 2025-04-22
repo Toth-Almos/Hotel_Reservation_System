@@ -30,6 +30,16 @@ export const createHotel = async (hotelData) => {
     }
 };
 
+export const deleteHotel = async (hotelId) => {
+    try {
+        const response = await apiClient.delete(`/api/v1/hotels/create-hotel/${hotelId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Hotel deletion error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Delete failed");
+    }
+};
+
 export const getRoomsByHotelId = async (hotelId) => {
     try {
         const response = await apiClient.get(`/api/v1/rooms/get-by-hotel/${hotelId}`);
@@ -62,7 +72,7 @@ export const createRoom = async (roomData) => {
 
 export const deleteRoom = async (roomdId) => {
     try {
-        const response = await apiClient.delete(`/api/v1/rooms/create-room/${roomdId}`);
+        const response = await apiClient.delete(`/api/v1/rooms/delete-room/${roomdId}`);
         return response.data;
     } catch (error) {
         console.error("Rooms creation error:", error.response?.data || error.message);

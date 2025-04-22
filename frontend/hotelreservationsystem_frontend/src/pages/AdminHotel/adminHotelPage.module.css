@@ -171,7 +171,8 @@ h2 {
 }
 
 .saveButton,
-.cancelButton {
+.cancelButton,
+.deleteButton {
     padding: 10px 18px;
     border: none;
     border-radius: 8px;
@@ -192,11 +193,21 @@ h2 {
 }
 
 .cancelButton {
-    background-color: #b33939;
+    background-color: #6b6b6b;
     color: white;
 }
 
 .cancelButton:hover {
+    background-color: #808080;
+    transform: translateY(-2px);
+}
+
+.deleteButton {
+    background-color: #b33939;
+    color: white;
+}
+
+.deleteButton:hover {
     background-color: #e74c3c;
     transform: translateY(-2px);
 }

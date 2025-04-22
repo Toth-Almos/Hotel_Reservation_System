@@ -73,32 +73,38 @@ export default function AdminRoomsPage() {
         <div className={classes.container}>
             <h2>Rooms of hotel Id: {hotelId}</h2>
 
-            <ul className={classes.list}>
-                {rooms.map((room) => (
-                    <li key={room.id} className={classes.roomCard}>
-                        <div>
-                            <strong>Type:</strong> {room.type}
-                        </div>
-                        <div>
-                            <strong>Max Guests:</strong> {room.maxGuests}
-                        </div>
-                        <div>
-                            <strong>Total number in the hotel:</strong> {room.totalCount}
-                        </div>
-                        <div>
-                            <strong>Price/Night:</strong> ${room.pricePerNight}
-                        </div>
-                        <div className={classes.actions}>
-                            <button onClick={() => handleEditClick(room)} className={classes.editButton}>
-                                Edit
-                            </button>
-                            <button onClick={() => handleDelete(room.id)} className={classes.deleteButton}>
-                                Delete
-                            </button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            {rooms.length === 0 ? (
+                <p className={classes.emptyMessage}>No rooms found for this hotel.</p>
+            ) : (
+                <ul className={classes.list}>
+                    {rooms.map((room) => (
+                        <li key={room.id} className={classes.roomCard}>
+                            <div>
+                                <strong>Type:</strong> {room.type}
+                            </div>
+                            <div>
+                                <strong>Max Guests:</strong> {room.maxGuests}
+                            </div>
+                            <div>
+                                <strong>Total number in the hotel:</strong> {room.totalCount}
+                            </div>
+                            <div>
+                                <strong>Price/Night:</strong> ${room.pricePerNight}
+                            </div>
+                            <div className={classes.actions}>
+                                <button onClick={() => handleEditClick(room)} className={classes.editButton}>
+                                    Edit
+                                </button>
+                                <button onClick={() => handleDelete(room.id)} className={classes.deleteButton}>
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+
 
             <div className={classes.editForm}>
                 <h3>{editingRoom ? "Edit Room" : "Create New Room"}</h3>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAll, updateHotel } from "../../services/HotelService";
+import { deleteHotel, getAll, updateHotel } from "../../services/HotelService";
 import classes from "./adminHotelPage.module.css";
 import { Link } from "react-router";
 
@@ -41,6 +41,11 @@ export default function AdminHotelPage() {
         }
     };
 
+    const handleDelete = async () => {
+        const response = await deleteHotel(editingHotel.id);
+        alert(response);
+    }
+
     return (
         <div className={classes.container}>
             <h2>Hotel Page for Admin</h2>
@@ -57,10 +62,11 @@ export default function AdminHotelPage() {
                                 <p>{hotel.city}</p>
                             </div>
                             <div className={classes.editButtonHolder}>
-                                <button onClick={() => handleEditClick(hotel)} className={classes.editButton}>Edit Hotel</button>
+                                <button onClick={() => handleEditClick(hotel)} className={classes.editButton}>Edit</button>
                                 <Link to={`/admin-rooms/${hotel.id}`}>
                                     <button className={classes.roomButton}>View Rooms</button>
                                 </Link>
+
                             </div>
                         </div>
                     </li>
@@ -89,6 +95,7 @@ export default function AdminHotelPage() {
                         <div className={classes.formActions}>
                             <button onClick={handleSave} className={classes.saveButton}>Save</button>
                             <button onClick={() => setEditingHotel(null)} className={classes.cancelButton}>Cancel</button>
+                            <button onClick={() => handleDelete()} className={classes.deleteButton}>Delete</button>
                         </div>
                     </div>
                 </div>
