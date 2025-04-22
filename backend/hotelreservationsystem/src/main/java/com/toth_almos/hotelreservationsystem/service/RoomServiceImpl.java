@@ -69,4 +69,10 @@ public class RoomServiceImpl implements RoomService {
         roomRepository.save(room);
         return room;
     }
+
+    @Override
+    public void deleteRoom(Long id) {
+        Room room = roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + id));
+        roomRepository.delete(room);
+    }
 }

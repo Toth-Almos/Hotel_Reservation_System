@@ -9,4 +9,5 @@ public interface RoomService {
     public List<Room> findByHotelId(Long hotelId);
     public Room createRoom(RoomRequest request);
     public Room updateRoom(Long id, RoomRequest request);
+    public void deleteRoom(Long id);
 }

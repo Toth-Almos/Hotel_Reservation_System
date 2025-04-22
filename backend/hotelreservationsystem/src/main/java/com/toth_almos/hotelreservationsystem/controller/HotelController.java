@@ -48,4 +48,10 @@ public class HotelController {
         Hotel hotel = hotelService.updateHotel(id, request);
         return hotelMapper.toDTO(hotel);
     }
+
+    @DeleteMapping("/delete-hotel/{id}")
+    public String deleteHotel(@PathVariable("id") Long id) {
+        hotelService.deleteHotel(id);
+        return "Hotel deleted successfully!";
+    }
 }

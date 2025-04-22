@@ -47,4 +47,10 @@ public class RoomController {
         Room room = roomService.updateRoom(id, request);
         return roomMapper.toDTO(room);
     }
+
+    @DeleteMapping("/delete-room/{id}")
+    public String deleteRoom(@PathVariable("id") Long id) {
+        roomService.deleteRoom(id);
+        return "Room deleted successfully!";
+    }
 }

@@ -2,7 +2,9 @@ package com.toth_almos.hotelreservationsystem.service;
 
 import com.toth_almos.hotelreservationsystem.dto.HotelRequest;
 import com.toth_almos.hotelreservationsystem.model.Hotel;
+import com.toth_almos.hotelreservationsystem.model.Room;
 import com.toth_almos.hotelreservationsystem.repository.HotelRepository;
+import com.toth_almos.hotelreservationsystem.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,12 @@ import java.util.List;
 public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
+    private final RoomRepository roomRepository;
 
     @Autowired
-    public HotelServiceImpl(HotelRepository hotelRepository) {
+    public HotelServiceImpl(HotelRepository hotelRepository, RoomRepository roomRepository) {
         this.hotelRepository = hotelRepository;
+        this.roomRepository = roomRepository;
     }
 
     @Override
@@ -77,5 +81,16 @@ public class HotelServiceImpl implements HotelService {
         existingHotel.setAddress(request.getAddress());
         existingHotel.setStar(request.getStar());
         return hotelRepository.save(existingHotel);
+    }
+
+    @Override
+    public void deleteHotel(Long id) {
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Hotel not found with id: " + id));
+
+        for(Room room : hotel.getRooms()) {
+            roomRepository.delete(room);
+        }
+
+        hotelRepository.delete(hotel);
     }
 }

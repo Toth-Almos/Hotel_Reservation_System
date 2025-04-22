@@ -17,7 +17,7 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     @Query("SELECT h FROM Hotel h")
     public List<Hotel> findAll();
 
-    @Query("SELECT h FROM Hotel h JOIN FETCH h.rooms WHERE h.id = :id")
+    @Query("SELECT h FROM Hotel h LEFT JOIN FETCH h.rooms WHERE h.id = :id")
     Optional<Hotel> findById(@Param("id") Long id);
 
     public List<Hotel> findByCountry(String country);

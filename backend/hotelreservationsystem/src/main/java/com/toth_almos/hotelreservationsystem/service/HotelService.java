@@ -11,4 +11,5 @@ public interface HotelService {
     public List<Hotel> findByNameContaining(String name);
     public Hotel createHotel(HotelRequest request);
     public Hotel updateHotel(Long id, HotelRequest request);
+    public void deleteHotel(Long id);
 }
