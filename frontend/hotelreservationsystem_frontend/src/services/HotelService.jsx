@@ -32,7 +32,7 @@ export const createHotel = async (hotelData) => {
 
 export const deleteHotel = async (hotelId) => {
     try {
-        const response = await apiClient.delete(`/api/v1/hotels/create-hotel/${hotelId}`);
+        const response = await apiClient.delete(`/api/v1/hotels/delete-hotel/${hotelId}`);
         return response.data;
     } catch (error) {
         console.error("Hotel deletion error:", error.response?.data || error.message);

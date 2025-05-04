@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteHotel, getAll, updateHotel } from "../../services/HotelService";
+import { createHotel, deleteHotel, getAll, updateHotel } from "../../services/HotelService";
 import classes from "./adminHotelPage.module.css";
 import { Link } from "react-router";
 
@@ -7,6 +7,13 @@ export default function AdminHotelPage() {
     const [hotels, setHotels] = useState([]);
     const [editingHotel, setEditingHotel] = useState(null);
     const [formData, setFormData] = useState({
+        name: "",
+        country: "",
+        city: "",
+        address: "",
+        star: 1
+    });
+    const [newHotelData, setNewHotelData] = useState({
         name: "",
         country: "",
         city: "",
@@ -31,6 +38,14 @@ export default function AdminHotelPage() {
         }));
     };
 
+    const handleNewHotelInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewHotelData(prev => ({
+            ...prev,
+            [name]: name === "star" ? parseInt(value) : value
+        }));
+    };
+
     const handleSave = async () => {
         try {
             const updatedHotel = await updateHotel(editingHotel.id, formData);
@@ -44,11 +59,52 @@ export default function AdminHotelPage() {
     const handleDelete = async () => {
         const response = await deleteHotel(editingHotel.id);
         alert(response);
+        setHotels(hotels.filter(h => h.id !== editingHotel.id));
+        setEditingHotel(null);
     }
+
+    const handleCreate = async () => {
+        try {
+            const createdHotel = await createHotel(newHotelData);
+            setHotels(prev => [...prev, createdHotel]);
+            setNewHotelData({
+                name: "",
+                country: "",
+                city: "",
+                address: "",
+                star: 1
+            });
+        } catch (error) {
+            console.error("Error creating hotel:", error);
+        }
+    };
 
     return (
         <div className={classes.container}>
             <h2>Hotel Page for Admin</h2>
+
+            {/* Create Hotel Form */}
+            <div className={classes.newHotelForm}>
+                <h3>Create New Hotel</h3>
+                <label>Name:</label>
+                <input name="name" value={newHotelData.name} onChange={handleNewHotelInputChange} />
+
+                <label>Country:</label>
+                <input name="country" value={newHotelData.country} onChange={handleNewHotelInputChange} />
+
+                <label>City:</label>
+                <input name="city" value={newHotelData.city} onChange={handleNewHotelInputChange} />
+
+                <label>Address:</label>
+                <input name="address" value={newHotelData.address} onChange={handleNewHotelInputChange} />
+
+                <label>Star Rating:</label>
+                <input type="number" name="star" min="1" max="5" value={newHotelData.star} onChange={handleNewHotelInputChange} />
+
+                <button onClick={handleCreate} className={classes.createButton}>Create Hotel</button>
+            </div>
+
+            {/* Hotel List */}
             <ul className={classes.list}>
                 {hotels.map(hotel => (
                     <li key={hotel.id}>
@@ -66,17 +122,18 @@ export default function AdminHotelPage() {
                                 <Link to={`/admin-rooms/${hotel.id}`}>
                                     <button className={classes.roomButton}>View Rooms</button>
                                 </Link>
-
                             </div>
                         </div>
                     </li>
                 ))}
             </ul>
 
+            {/* Edit Hotel Form */}
             {editingHotel && (
                 <div className={classes.modalOverlay}>
                     <div className={classes.editForm}>
                         <h3>Editing: {editingHotel.name}</h3>
+
                         <label>Name:</label>
                         <input name="name" value={formData.name} onChange={handleInputChange} />
 
@@ -87,7 +144,7 @@ export default function AdminHotelPage() {
                         <input name="city" value={formData.city} onChange={handleInputChange} />
 
                         <label>Address:</label>
-                        <input name="country" value={formData.address} onChange={handleInputChange} />
+                        <input name="address" value={formData.address} onChange={handleInputChange} />
 
                         <label>Star Rating:</label>
                         <input type="number" name="star" min="1" max="5" value={formData.star} onChange={handleInputChange} />
@@ -95,7 +152,7 @@ export default function AdminHotelPage() {
                         <div className={classes.formActions}>
                             <button onClick={handleSave} className={classes.saveButton}>Save</button>
                             <button onClick={() => setEditingHotel(null)} className={classes.cancelButton}>Cancel</button>
-                            <button onClick={() => handleDelete()} className={classes.deleteButton}>Delete</button>
+                            <button onClick={handleDelete} className={classes.deleteButton}>Delete</button>
                         </div>
                     </div>
                 </div>
