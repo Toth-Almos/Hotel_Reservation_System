@@ -6,9 +6,15 @@ import com.toth_almos.hotelreservationsystem.mapper.ReservationMapper;
 import com.toth_almos.hotelreservationsystem.model.Reservation;
 import com.toth_almos.hotelreservationsystem.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -34,6 +40,26 @@ public class ReservationController {
     public ResponseEntity<String> deleteReservation(@PathVariable("id") Long id) {
         reservationService.deleteReservation(id);
         return ResponseEntity.ok("Successfully deleted reservation.");
+    }
+
+    @GetMapping("/get-filtered-reservations")
+    public ResponseEntity<Page<ReservationDTO>> getFilteredReservations(
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String hotelName,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "checkInDate") String sortBy
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        if (username != null && username.trim().isEmpty()) username = null;
+        if (hotelName != null && hotelName.trim().isEmpty()) hotelName = null;
+        Page<Reservation> reservations = reservationService.findFilteredReservations(username, hotelName, startDate, endDate, pageable);
+
+        Page<ReservationDTO> reservationDTOs = reservations.map(reservationMapper::toDTO);
+        return ResponseEntity.ok(reservationDTOs);
     }
 
     @GetMapping("/get-reservations/{id}")

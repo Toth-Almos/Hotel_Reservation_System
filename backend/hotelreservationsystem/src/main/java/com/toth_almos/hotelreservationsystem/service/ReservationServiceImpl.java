@@ -4,12 +4,19 @@ import com.toth_almos.hotelreservationsystem.dto.ReservationRequest;
 import com.toth_almos.hotelreservationsystem.model.*;
 import com.toth_almos.hotelreservationsystem.repository.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -43,6 +50,31 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> findActiveReservationsByCustomerId(Long id) {
         return reservationRepository.findActiveReservationsByCustomerId(id, LocalDate.now());
+    }
+
+    @Override
+    public Page<Reservation> findFilteredReservations(String username, String hotelName, LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        return reservationRepository.findAll((Root<Reservation> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (username != null && !username.trim().isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("customer").get("username")), "%" + username.toLowerCase() + "%"));
+            }
+
+            if (hotelName != null && !hotelName.trim().isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("hotel").get("name")), "%" + hotelName.toLowerCase() + "%"));
+            }
+
+            if (startDate != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("checkInDate"), startDate));
+            }
+
+            if (endDate != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("checkOutDate"), endDate));
+            }
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        }, pageable);
     }
 
     @Transactional
