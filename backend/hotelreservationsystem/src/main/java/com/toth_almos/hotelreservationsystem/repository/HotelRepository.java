@@ -14,12 +14,12 @@ import java.util.Optional;
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
     @EntityGraph(attributePaths = {"rooms"})
-    @Query("SELECT h FROM Hotel h")
+    @Query("SELECT h FROM Hotel h WHERE h.deleted = false")
     public List<Hotel> findAll();
 
-    @Query("SELECT h FROM Hotel h LEFT JOIN FETCH h.rooms WHERE h.id = :id")
+    @Query("SELECT h FROM Hotel h LEFT JOIN FETCH h.rooms WHERE h.id = :id AND h.deleted = false")
     Optional<Hotel> findById(@Param("id") Long id);
 
-    public List<Hotel> findByCountry(String country);
-    public List<Hotel> findByNameContainingIgnoreCase(String name);
+    public List<Hotel> findByCountryAndDeletedFalse(String country);
+    public List<Hotel> findByNameContainingIgnoreCaseAndDeletedFalse(String name);
 }

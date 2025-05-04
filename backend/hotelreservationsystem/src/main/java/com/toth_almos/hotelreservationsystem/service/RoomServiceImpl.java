@@ -29,7 +29,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> findByHotelId(Long hotelId) {
-        return roomRepository.findByHotelId(hotelId);
+        return roomRepository.findByHotelIdAndDeletedFalse(hotelId);
     }
 
     @Override
@@ -73,6 +73,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void deleteRoom(Long id) {
         Room room = roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + id));
-        roomRepository.delete(room);
+        room.setDeleted(true);
+        roomRepository.save(room);
     }
 }

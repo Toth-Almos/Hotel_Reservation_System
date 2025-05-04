@@ -22,7 +22,14 @@ export default function AdminHotelPage() {
     });
 
     useEffect(() => {
-        getAll().then(setHotels)
+        getAll()
+            .then(data => {
+                setHotels(Array.isArray(data) ? data : []);
+            })
+            .catch(error => {
+                console.error("Error fetching hotels:", error);
+                setHotels([]);
+            });
     }, []);
 
     const handleEditClick = (hotel) => {

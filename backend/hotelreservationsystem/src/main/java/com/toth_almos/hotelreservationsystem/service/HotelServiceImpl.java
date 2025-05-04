@@ -35,12 +35,12 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public List<Hotel> findByCountry(String country) {
-        return hotelRepository.findByCountry(country);
+        return hotelRepository.findByCountryAndDeletedFalse(country);
     }
 
     @Override
     public List<Hotel> findByNameContaining(String name) {
-        return hotelRepository.findByNameContainingIgnoreCase(name);
+        return hotelRepository.findByNameContainingIgnoreCaseAndDeletedFalse(name);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class HotelServiceImpl implements HotelService {
             throw new IllegalArgumentException("Hotel rating must be between 1 and 5");
         }
 
-        if(request.getName().length() < 5 || request.getCountry().length() < 5 || request.getCity().length() < 5 || request.getAddress().length() < 10) {
+        if(request.getName().length() < 4 || request.getCountry().length() < 4 || request.getCity().length() < 4 || request.getAddress().length() < 10) {
             throw new IllegalArgumentException("Please give valid value for the Hotel's name/country/city/address");
         }
 
@@ -71,7 +71,7 @@ public class HotelServiceImpl implements HotelService {
             throw new IllegalArgumentException("Hotel rating must be between 1 and 5");
         }
 
-        if(request.getName().length() < 5 || request.getCountry().length() < 5 || request.getCity().length() < 5 || request.getAddress().length() < 10) {
+        if(request.getName().length() < 4 || request.getCountry().length() < 4 || request.getCity().length() < 4 || request.getAddress().length() < 10) {
             throw new IllegalArgumentException("Please give valid value for the Hotel's name/country/city/address");
         }
 
@@ -88,9 +88,11 @@ public class HotelServiceImpl implements HotelService {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Hotel not found with id: " + id));
 
         for(Room room : hotel.getRooms()) {
-            roomRepository.delete(room);
+            room.setDeleted(true);
+            roomRepository.save(room);
         }
 
-        hotelRepository.delete(hotel);
+        hotel.setDeleted(true);
+        hotelRepository.save(hotel);
     }
 }

@@ -11,4 +11,5 @@ public class RoomDTO {
     private int maxGuests;
     private int totalCount;
     private double pricePerNight;
+    private boolean deleted;
 }

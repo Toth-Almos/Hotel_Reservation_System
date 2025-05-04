@@ -13,4 +13,5 @@ public class HotelDTO {
     private String city;
     private String address;
     private List<RoomDTO> rooms;
+    private boolean deleted;
 }

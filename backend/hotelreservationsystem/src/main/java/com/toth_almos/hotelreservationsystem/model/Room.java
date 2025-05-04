@@ -29,4 +29,7 @@ public class Room {
 
     @Column(nullable = false)
     private double pricePerNight;
+
+    @Column(nullable = false)
+    private boolean deleted;
 }
