@@ -39,3 +39,32 @@ export const deleteReservation = async (reservationId) => {
         throw new Error(error.response?.data?.message || "Reservation delete failed.");
     }
 }
+
+export const getFilteredReservations = async (filters = {}, page = 0, size = 10) => {
+    try {
+        // Sanitize filters: remove empty strings
+        const sanitizedFilters = {
+            ...filters,
+            username: filters.username?.trim() || undefined,
+            hotelName: filters.hotelName?.trim() || undefined,
+            startDate: filters.startDate || undefined,
+            endDate: filters.endDate || undefined,
+        };
+
+        const params = {
+            ...sanitizedFilters,
+            page,
+            size
+        };
+
+        const response = await apiClient.get('/api/v1/reservation/get-filtered-reservations', {
+            params,
+            withCredentials: true,
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Fetching filtered reservations failed:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Fetching filtered reservations failed.");
+    }
+};
