@@ -1,18 +1,38 @@
-import { getAll } from '../../services/HotelService';
+import { getFilteredHotels } from '../../services/HotelService';
 import classes from './browserPage.module.css'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router'
 
 export default function BrowserPage() {
     const [hotels, setHotels] = useState();
+    const [filters, setFilters] = useState({ name: '', country: '', star: '' });
 
-    useEffect(() => {
-        getAll().then(setHotels)
-    }, []);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFilters(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSearch = async () => {
+        try {
+            const data = await getFilteredHotels(filters);
+            setHotels(data.content || []);
+        } catch (error) {
+            console.error("Error searching hotels:", error.message);
+            setHotels([]);
+        }
+    };
 
     return (
         <div className={classes.container}>
             <h2>Browser Page</h2>
+
+            <div className={classes.searchSection}>
+                <input name="name" placeholder="Name" value={filters.name} onChange={handleChange} />
+                <input name="country" placeholder="Country" value={filters.country} onChange={handleChange} />
+                <input name="star" type="number" placeholder="Star" value={filters.star} onChange={handleChange} />
+                <button onClick={handleSearch}>Search</button>
+            </div>
+
             <ul className={classes.list}>
                 {hotels && hotels.map(hotel => (
                     <li key={hotel.id}>

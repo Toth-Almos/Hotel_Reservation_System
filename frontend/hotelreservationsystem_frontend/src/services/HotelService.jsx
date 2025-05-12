@@ -5,6 +5,33 @@ export const getAll = async () => {
     return response.data;
 };
 
+export const getFilteredHotels = async (filters = {}, page = 0, size = 10) => {
+    try {
+        // Sanitize filters: remove empty or undefined values
+        const sanitizedFilters = {
+            name: filters.name?.trim() || undefined,
+            country: filters.country?.trim() || undefined,
+            star: filters.star !== '' && filters.star !== null ? filters.star : undefined,
+        };
+
+        const params = {
+            ...sanitizedFilters,
+            page,
+            size,
+        };
+
+        const response = await apiClient.get('api/v1/hotels/filtered', {
+            params,
+            withCredentials: true,
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Fetching filtered hotels failed:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Fetching filtered hotels failed.");
+    }
+};
+
 export const getById = async (hotelId) => {
     const response = await apiClient.get('api/v1/hotels/' + hotelId);
     return response.data;

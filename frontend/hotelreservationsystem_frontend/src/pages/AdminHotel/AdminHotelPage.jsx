@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { createHotel, deleteHotel, getAll, updateHotel } from "../../services/HotelService";
+import { createHotel, deleteHotel, getAll, getFilteredHotels, updateHotel } from "../../services/HotelService";
 import classes from "./adminHotelPage.module.css";
 import { Link } from "react-router";
 
 export default function AdminHotelPage() {
     const [hotels, setHotels] = useState([]);
     const [editingHotel, setEditingHotel] = useState(null);
+    const [filters, setFilters] = useState({ name: '', country: '', star: '' });
     const [formData, setFormData] = useState({
         name: "",
         country: "",
@@ -31,6 +32,21 @@ export default function AdminHotelPage() {
                 setHotels([]);
             });
     }, []);
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSearch = async () => {
+        try {
+            const data = await getFilteredHotels(filters);
+            setHotels(data.content || []);
+        } catch (error) {
+            console.error("Error searching hotels:", error.message);
+            setHotels([]);
+        }
+    };
 
     const handleEditClick = (hotel) => {
         setEditingHotel(hotel);
@@ -109,6 +125,14 @@ export default function AdminHotelPage() {
                 <input type="number" name="star" min="1" max="5" value={newHotelData.star} onChange={handleNewHotelInputChange} />
 
                 <button onClick={handleCreate} className={classes.createButton}>Create Hotel</button>
+            </div>
+
+            {/* Filter Bar */}
+            <div className={classes.searchBar}>
+                <input name="name" placeholder="Name" value={filters.name} onChange={handleFilterChange} />
+                <input name="country" placeholder="Country" value={filters.country} onChange={handleFilterChange} />
+                <input name="star" type="number" placeholder="Star" value={filters.star} onChange={handleFilterChange} />
+                <button onClick={handleSearch}>Search</button>
             </div>
 
             {/* Hotel List */}

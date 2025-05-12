@@ -74,7 +74,56 @@ h2 {
     color: #666;
 }
 
-/* Responsive Design */
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.searchSection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.searchSection input,
+.searchSection select {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    flex: 1;
+    min-width: 150px;
+}
+
+.searchSection button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.searchSection button:hover {
+    background-color: #0056b3;
+}
+
 @media (max-width: 768px) {
     .list {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
