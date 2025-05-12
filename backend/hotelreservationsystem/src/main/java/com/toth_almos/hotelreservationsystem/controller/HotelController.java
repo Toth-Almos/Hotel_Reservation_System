@@ -6,6 +6,8 @@ import com.toth_almos.hotelreservationsystem.mapper.HotelMapper;
 import com.toth_almos.hotelreservationsystem.model.Hotel;
 import com.toth_almos.hotelreservationsystem.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +37,18 @@ public class HotelController {
         List<Hotel> hotels = hotelService.findAll();
         List<HotelDTO> hotelDTOs= hotelMapper.toDTOList(hotels);
         return hotelDTOs.isEmpty() ? null : hotelDTOs;
+    }
+
+    @GetMapping("/filtered")
+    public Page<HotelDTO> getFilteredHotels(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) Integer star,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        Page<Hotel> hotels = hotelService.findFilteredHotels(name, country, star, PageRequest.of(page, size));
+        return hotels.map(hotelMapper::toDTO);
     }
 
     @PostMapping("/create-hotel")
