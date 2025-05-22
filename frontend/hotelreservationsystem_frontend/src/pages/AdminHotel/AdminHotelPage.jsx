@@ -128,10 +128,10 @@ export default function AdminHotelPage() {
             </div>
 
             {/* Filter Bar */}
-            <div className={classes.searchBar}>
+            <div className={classes.searchSection}>
                 <input name="name" placeholder="Name" value={filters.name} onChange={handleFilterChange} />
                 <input name="country" placeholder="Country" value={filters.country} onChange={handleFilterChange} />
-                <input name="star" type="number" placeholder="Star" value={filters.star} onChange={handleFilterChange} />
+                <input name="star" type="number" placeholder="Star" min="1" max="5" value={filters.star} onChange={handleFilterChange} />
                 <button onClick={handleSearch}>Search</button>
             </div>
 

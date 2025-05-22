@@ -11,4 +11,5 @@ public interface AuthService {
     public User getCurrentUser(HttpSession session);
     public User register(RegisterRequest request);
     public void changePassword(String username, ChangePasswordRequest request);
+    public boolean verifyUser(String token);
 }

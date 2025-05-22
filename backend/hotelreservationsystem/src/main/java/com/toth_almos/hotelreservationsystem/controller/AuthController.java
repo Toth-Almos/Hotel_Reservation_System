@@ -56,4 +56,15 @@ public class AuthController {
         authService.changePassword(username, request);
         return ResponseEntity.ok("Password changed successfully");
     }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyUser(@RequestParam("token") String token) {
+        boolean verified = authService.verifyUser(token);
+        System.out.println("Verification endpoint reached!");
+        if (verified) {
+            return ResponseEntity.ok("Email successfully verified. You may now log in.");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid or expired verification token.");
+        }
+    }
 }

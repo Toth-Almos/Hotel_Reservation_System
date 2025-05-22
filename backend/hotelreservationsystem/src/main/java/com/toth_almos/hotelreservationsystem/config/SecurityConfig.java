@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/hotels", "api/v1/hotels/{id}", "api/v1/hotels/filtered" ).permitAll()
                         .requestMatchers("/api/v1/rooms/{id}", "/api/v1/rooms/get-by-hotel/{id}").permitAll()
-                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/logout", "/api/v1/auth/current-user", "/api/v1/auth/register", "/api/v1/auth/change-password").permitAll()
+                        .requestMatchers("/api/v1/auth/login", "/api/v1/auth/logout", "/api/v1/auth/current-user", "/api/v1/auth/register", "/api/v1/auth/change-password", "/api/v1/auth/verify").permitAll()
                         .requestMatchers("/api/v1/user/{customerId}", "/api/v1/user/update-profile/{customerId}").hasRole("CUSTOMER")
                         .requestMatchers("/api/v1/reservation/create-reservation").hasRole("CUSTOMER")
                         .requestMatchers("/api/reservation/delete-reservation/{id}", "/api/reservation/get-reservations/{id}", "/api/reservation/get-active-reservations/{id}").hasAnyRole("CUSTOMER", "ADMIN")

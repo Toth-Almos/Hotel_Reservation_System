@@ -83,6 +83,13 @@
 			<version>0.2.0</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Mail Sender -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
