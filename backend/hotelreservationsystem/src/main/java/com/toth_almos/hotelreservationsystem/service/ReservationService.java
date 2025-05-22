@@ -15,4 +15,5 @@ public interface ReservationService {
     public Page<Reservation> findFilteredReservations(String username, String hotelName, LocalDate startDate, LocalDate endDate, Pageable pageable);
     public Reservation createReservation(ReservationRequest reservationRequest);
     public void deleteReservation(Long reservationId);
+    public Reservation upddateReservation(Long reservationId, ReservationRequest request);
 }

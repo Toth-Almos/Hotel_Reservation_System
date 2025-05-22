@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -16,16 +16,14 @@ public class Payment {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod method;
+
+    @Column(nullable = true)
+    private LocalDateTime paymentDate;
 
     @Column(nullable = false)
-    private double amount;
-
-    @Column(nullable = false)
-    private LocalDate paymentDate;
-
-    @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
 }

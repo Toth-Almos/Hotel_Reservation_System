@@ -17,11 +17,13 @@ public interface ReservationMapper {
     //@Mapping(source = "reservationItems", target = "reservationItems")
     @Mapping(source = "hotel.id", target = "hotelId")
     @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "payment.id", target = "paymentId")
     ReservationDTO toDTO(Reservation reservation);
 
     //@Mapping(source = "reservationItems", target = "reservationItems")
     @Mapping(source = "hotelId", target = "hotel.id")
     @Mapping(source = "customerId", target = "customer.id")
+    @Mapping(source = "paymentId", target = "payment.id")
     Reservation toEntity(ReservationDTO reservationDTO);
 
     List<ReservationDTO> toDTOList(List<Reservation> reservations);

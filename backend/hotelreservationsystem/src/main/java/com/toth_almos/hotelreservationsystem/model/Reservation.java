@@ -25,6 +25,10 @@ public class Reservation {
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
+    @OneToOne
+    @JoinColumn(name = "payment_id", nullable = false)
+    private Payment payment;
+
     @Column(nullable = false)
     private LocalDate checkInDate;
 

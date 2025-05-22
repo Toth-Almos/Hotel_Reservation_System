@@ -73,4 +73,10 @@ public class ReservationController {
         List<Reservation> reservations = reservationService.findActiveReservationsByCustomerId(id);
         return ResponseEntity.ok(reservationMapper.toDTOList(reservations));
     }
+
+    @PatchMapping("/update-reservation/{id}")
+    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable("id") Long id, @RequestBody ReservationRequest request) {
+        Reservation reservation = reservationService.upddateReservation(id, request);
+        return ResponseEntity.ok(reservationMapper.toDTO(reservation));
+    }
 }

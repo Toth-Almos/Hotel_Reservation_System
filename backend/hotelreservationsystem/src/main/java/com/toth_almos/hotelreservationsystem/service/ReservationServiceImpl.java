@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +28,16 @@ public class ReservationServiceImpl implements ReservationService {
     private final HotelRepository hotelRepository;
     private final RoomRepository roomRepository;
     private final ReservationItemRepository reservationItemRepository;
+    private final PaymentRepository paymentRepository;
 
     @Autowired
-    public ReservationServiceImpl(ReservationRepository reservationRepository, UserRepository userRepository, HotelRepository hotelRepository, RoomRepository roomRepository, ReservationItemRepository reservationItemRepository) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, UserRepository userRepository, HotelRepository hotelRepository, RoomRepository roomRepository, ReservationItemRepository reservationItemRepository, PaymentRepository paymentRepository) {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.hotelRepository = hotelRepository;
         this.roomRepository = roomRepository;
         this.reservationItemRepository = reservationItemRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     @Override
@@ -127,6 +130,20 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setTotalCost(totalCost.get());
         reservation.setReservationItems(reservationItems);
 
+        //Create Payment:
+        Payment payment = new Payment();
+        payment.setMethod(reservationRequest.getPaymentMethod());
+        if(reservationRequest.getPaymentMethod().equals(PaymentMethod.ONLINE)) {
+            payment.setPaymentDate(LocalDateTime.now());
+            payment.setStatus(PaymentStatus.APPROVED);
+        }
+        else {
+            payment.setPaymentDate(null);
+            payment.setStatus(PaymentStatus.PENDING);
+        }
+        paymentRepository.save(payment);
+        reservation.setPayment(payment);
+
         return reservationRepository.save(reservation);
     }
 
@@ -139,10 +156,18 @@ public class ReservationServiceImpl implements ReservationService {
             throw new IllegalStateException("Reservations can only be canceled before 4 days at maximum.");
         }
 
+        paymentRepository.delete(reservation.getPayment());
         for (ReservationItem item : reservation.getReservationItems()) {
             reservationItemRepository.delete(item);
         }
         reservationRepository.delete(reservation);
+    }
+
+    @Override
+    @Transactional
+    public Reservation upddateReservation(Long reservationId, ReservationRequest request) {
+        //TODO
+        return null;
     }
 
 
