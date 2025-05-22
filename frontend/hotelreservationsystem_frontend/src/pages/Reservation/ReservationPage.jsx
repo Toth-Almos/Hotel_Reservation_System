@@ -24,6 +24,7 @@ export default function ReservationPage() {
     const [checkInDate, setCheckInDate] = useState("");
     const [checkOutDate, setCheckOutDate] = useState("");
     const [totalCost, setTotalCost] = useState(0);
+    const [paymentMethod, setPaymentMethod] = useState("ONSITE");
 
     if (!hotel) {
         return <p className={classes.error}>Error: No hotel selected.</p>;
@@ -67,6 +68,7 @@ export default function ReservationPage() {
             customerId: user.id,
             checkInDate,
             checkOutDate,
+            paymentMethod: paymentMethod,
             reservationItemRequests: Object.entries(selectedRooms)
                 .map(([roomId, count]) => count > 0 ? { roomId: parseInt(roomId), numberOfRooms: count } : null)
                 .filter(item => item !== null),
@@ -112,6 +114,14 @@ export default function ReservationPage() {
                 ))}
 
                 <h3 className={classes.totalCost}>Total Cost: {totalCost.toFixed(2)}€</h3>
+
+                <label>
+                    Payment Method:
+                    <select value={paymentMethod} className={classes.paymentSelect} onChange={(e) => setPaymentMethod(e.target.value)} required>
+                        <option value="ONLINE">Online</option>
+                        <option value="ONSITE">On site</option>
+                    </select>
+                </label>
 
                 <button type="submit" className={classes.reserveButton}>Confirm Reservation</button>
             </form>
