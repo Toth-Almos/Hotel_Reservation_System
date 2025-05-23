@@ -126,6 +126,8 @@ export default function AdminReservationsPage() {
                             <div><strong>Check-in:</strong> {res.checkInDate}</div>
                             <div><strong>Check-out:</strong> {res.checkOutDate}</div>
                             <div><strong>Total Cost:</strong> ${res.totalCost}</div>
+                            <div><strong>Payment Method:</strong> {res.payment.method} </div>
+                            <div><strong>Payment Status:</strong> {res.payment.status} </div>
                             <div className={classes.actions}>
                                 <button className={classes.editButton} onClick={() => handleEditClick(res)}>Edit</button>
                                 <button className={classes.deleteButton} onClick={() => handleDelete(res.id)}>Delete</button>
