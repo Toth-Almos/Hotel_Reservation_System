@@ -29,6 +29,8 @@ export default function ReservationHistoryPage() {
                             <p><strong>Check-in:</strong> {reservation.checkInDate}</p>
                             <p><strong>Check-out:</strong> {reservation.checkOutDate}</p>
                             <p><strong>Total Cost:</strong> {reservation.totalCost.toFixed(2)}€</p>
+                            <p><strong>Payment Method:</strong> {reservation.payment.method} </p>
+                            <p><strong>Payment Status:</strong> {reservation.payment.status} </p>
                             <div className={classes.rooms}>
                                 <p><strong>Rooms:</strong></p>
                                 <ul>

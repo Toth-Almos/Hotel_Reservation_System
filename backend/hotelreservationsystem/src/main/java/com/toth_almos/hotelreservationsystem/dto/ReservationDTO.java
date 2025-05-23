@@ -13,7 +13,7 @@ public class ReservationDTO {
     private Long id;
     private Long customerId;
     private Long hotelId;
-    private Long paymentId;
+    private PaymentDTO payment;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private LocalDate reservationDate;

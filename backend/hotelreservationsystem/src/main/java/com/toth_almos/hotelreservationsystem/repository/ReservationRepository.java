@@ -16,14 +16,14 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, JpaSpecificationExecutor<Reservation> {
-    @EntityGraph(attributePaths = {"reservationItems", "reservationItems.room"})
+    @EntityGraph(attributePaths = {"reservationItems", "reservationItems.room", "payment"})
     List<Reservation> findByCustomerId(Long userId);
     boolean existsByCustomerIdAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqual(Long customerId, LocalDate checkOutDate, LocalDate checkInDate);
 
-    @EntityGraph(attributePaths = {"reservationItems", "reservationItems.room"})
+    @EntityGraph(attributePaths = {"reservationItems", "reservationItems.room", "payment"})
     @Query("SELECT r FROM Reservation r WHERE r.customer.id = :customerId AND r.checkOutDate > :currentDate")
     List<Reservation> findActiveReservationsByCustomerId(@Param("customerId") Long customerId, @Param("currentDate") LocalDate currentDate);
 
-    @EntityGraph(attributePaths = {"reservationItems", "reservationItems.room", "customer", "hotel"})
+    @EntityGraph(attributePaths = {"reservationItems", "reservationItems.room", "payment", "customer", "hotel"})
     Page<Reservation> findAll(Specification<Reservation> spec, Pageable pageable);
 }
