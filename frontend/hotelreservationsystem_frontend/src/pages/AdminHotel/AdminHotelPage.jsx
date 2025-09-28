@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { createHotel, deleteHotel, getAll, getFilteredHotels, updateHotel } from "../../services/HotelService";
+import { useState } from "react";
+import { createHotel, deleteHotel, getFilteredHotels, updateHotel } from "../../services/HotelService";
 import classes from "./adminHotelPage.module.css";
 import { Link } from "react-router";
 
@@ -21,17 +21,6 @@ export default function AdminHotelPage() {
         address: "",
         star: 1
     });
-
-    useEffect(() => {
-        getAll()
-            .then(data => {
-                setHotels(Array.isArray(data) ? data : []);
-            })
-            .catch(error => {
-                console.error("Error fetching hotels:", error);
-                setHotels([]);
-            });
-    }, []);
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;

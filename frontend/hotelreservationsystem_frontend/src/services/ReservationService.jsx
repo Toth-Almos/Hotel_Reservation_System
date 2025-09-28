@@ -68,3 +68,15 @@ export const getFilteredReservations = async (filters = {}, page = 0, size = 10)
         throw new Error(error.response?.data?.message || "Fetching filtered reservations failed.");
     }
 };
+
+export const updateReservation = async (reservationId, updatedData) => {
+    try {
+        const response = await apiClient.patch(`/api/v1/reservation/update-reservation/${reservationId}`, updatedData, {
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Reservation update error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Reservation update failed.");
+    }
+};

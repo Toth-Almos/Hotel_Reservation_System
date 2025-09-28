@@ -13,6 +13,7 @@ public class ReservationRequest {
     private Long customerId;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+    private double totalCost;
     private List<ReservationItemRequest> reservationItemRequests;
     private PaymentMethod paymentMethod;
 }

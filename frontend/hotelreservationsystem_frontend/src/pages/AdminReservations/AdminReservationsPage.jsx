@@ -1,6 +1,6 @@
 import { useState } from "react";
 import classes from "./adminReservationPage.module.css";
-import { deleteReservation, getFilteredReservations } from "../../services/ReservationService";
+import { deleteReservation, getFilteredReservations, updateReservation } from "../../services/ReservationService";
 
 export default function AdminReservationsPage() {
     const [reservations, setReservations] = useState([]);
@@ -14,8 +14,6 @@ export default function AdminReservationsPage() {
     const [totalPages, setTotalPages] = useState(1);
     const [editingReservation, setEditingReservation] = useState(null);
     const [editFormData, setEditFormData] = useState({
-        customerId: "",
-        hotelId: "",
         checkInDate: "",
         checkOutDate: "",
         totalCost: ""
@@ -46,8 +44,6 @@ export default function AdminReservationsPage() {
     const handleEditClick = (reservation) => {
         setEditingReservation(reservation);
         setEditFormData({
-            customerId: reservation.customerId,
-            hotelId: reservation.hotelId,
             checkInDate: reservation.checkInDate,
             checkOutDate: reservation.checkOutDate,
             totalCost: reservation.totalCost
@@ -61,7 +57,11 @@ export default function AdminReservationsPage() {
 
     const handleUpdate = async () => {
         try {
-            //await updateReservation(editingReservation.id, editFormData);
+            await updateReservation(editingReservation.id, {
+                ...editFormData,
+                customerId: editingReservation.customerId,
+                hotelId: editingReservation.hotelId
+            });
             setEditingReservation(null);
             handleSearch(page);
         } catch (err) {
@@ -141,11 +141,6 @@ export default function AdminReservationsPage() {
                 <div className={classes.modalOverlay}>
                     <div className={classes.modalContent}>
                         <h3>Edit Reservation</h3>
-                        <label>User ID:</label>
-                        <input name="customerId" value={editFormData.customerId} onChange={handleEditInputChange} />
-
-                        <label>Hotel ID:</label>
-                        <input name="hotelId" value={editFormData.hotelId} onChange={handleEditInputChange} />
 
                         <label>Check-in:</label>
                         <input type="date" name="checkInDate" value={editFormData.checkInDate} onChange={handleEditInputChange} />

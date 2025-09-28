@@ -26,4 +26,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>,
 
     @EntityGraph(attributePaths = {"reservationItems", "reservationItems.room", "payment", "customer", "hotel"})
     Page<Reservation> findAll(Specification<Reservation> spec, Pageable pageable);
+
+    boolean existsByCustomerIdAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqualAndIdNot(Long customerId, LocalDate checkOutDate, LocalDate checkInDate, Long excludeReservationId);
 }

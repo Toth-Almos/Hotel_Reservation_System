@@ -95,6 +95,9 @@ public class ReservationServiceImpl implements ReservationService {
         if(ChronoUnit.DAYS.between(LocalDate.now(), reservationRequest.getCheckInDate()) <= 4) {
             throw new IllegalArgumentException("You have to make a reservation before 4 days of the check in date at least.");
         }
+        if(reservationRequest.getCheckInDate().isAfter(reservationRequest.getCheckOutDate())) {
+            throw new IllegalArgumentException("The check-in date can not be after the check-out date! Please add a valid time duration!");
+        }
 
         Customer customer = userRepository.findByCustomerId(reservationRequest.getCustomerId()).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
         Hotel hotel = hotelRepository.findById(reservationRequest.getHotelId()).orElseThrow(() -> new EntityNotFoundException("Hotel not found"));
@@ -153,10 +156,9 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
 
         if(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getCheckInDate()) <= 4) {
-            throw new IllegalStateException("Reservations can only be canceled before 4 days at maximum.");
+            throw new IllegalStateException("Reservations can only be canceled before 4 days at maximum. Please contact the Administrator for more information!");
         }
 
-        paymentRepository.delete(reservation.getPayment());
         for (ReservationItem item : reservation.getReservationItems()) {
             reservationItemRepository.delete(item);
         }
@@ -166,8 +168,46 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public Reservation upddateReservation(Long reservationId, ReservationRequest request) {
-        //TODO
-        return null;
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException("Reservation not found with id: " + reservationId));
+
+        // Only update dates if they're changing and valid
+        if (!request.getCheckInDate().isEqual(request.getCheckOutDate())) {
+            long daysBetween = ChronoUnit.DAYS.between(request.getCheckInDate(), request.getCheckOutDate());
+
+            if (daysBetween > 30) {
+                throw new IllegalArgumentException("Reservations cannot exceed 30 days.");
+            }
+
+            if (ChronoUnit.DAYS.between(LocalDate.now(), request.getCheckInDate()) <= 4) {
+                throw new IllegalArgumentException("You have to make a reservation before 4 days of the check in date at least.");
+            }
+
+            // Check for conflicts if dates changed
+            if (!reservation.getCheckInDate().equals(request.getCheckInDate()) || !reservation.getCheckOutDate().equals(request.getCheckOutDate())) {
+                boolean conflict = reservationRepository
+                        .existsByCustomerIdAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqualAndIdNot(
+                                reservation.getCustomer().getId(),
+                                request.getCheckOutDate(),
+                                request.getCheckInDate(),
+                                reservation.getId()
+                        );
+
+                if (conflict) {
+                    throw new IllegalStateException("You already have an active reservation within the selected date range.");
+                }
+            }
+
+            reservation.setCheckInDate(request.getCheckInDate());
+            reservation.setCheckOutDate(request.getCheckOutDate());
+        }
+
+        // Update total cost if needed
+        if (request.getTotalCost() != reservation.getTotalCost()) {
+            reservation.setTotalCost(request.getTotalCost());
+        }
+
+        return reservationRepository.save(reservation);
     }
 
 
