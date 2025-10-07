@@ -92,41 +92,74 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    justify-content: center;
+    align-items: center;
+    transition: box-shadow 0.3s ease;
+}
+
+.searchSection:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .searchSection input,
 .searchSection select {
-    padding: 0.5rem 0.75rem;
+    padding: 0.6rem 1rem;
     font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 6px;
-    flex: 1;
-    min-width: 150px;
+    border-radius: 8px;
+    flex: 1 1 180px;
+    min-width: 160px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchSection input:focus,
+.searchSection select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    outline: none;
 }
 
 .searchSection button {
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
     background-color: #007bff;
     color: white;
-    border: none;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .searchSection button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.searchSection .resetButton {
+    background-color: #6c757d;
+}
+
+.searchSection .resetButton:hover {
+    background-color: #495057;
+    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
     .list {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .searchSection input,
+    .searchSection select,
+    .searchSection button {
+        flex: 1 1 100%;
     }
 }
 

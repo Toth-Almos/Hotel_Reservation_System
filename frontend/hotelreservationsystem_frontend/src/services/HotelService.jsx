@@ -5,7 +5,7 @@ export const getAll = async () => {
     return response.data;
 };
 
-export const getFilteredHotels = async (filters = {}, page = 0, size = 10) => {
+export const getFilteredHotels = async (filters = {}, page = 0, size = 10, sortBy = "name", sortDirection = "asc") => {
     try {
         // Sanitize filters: remove empty or undefined values
         const sanitizedFilters = {
@@ -18,6 +18,8 @@ export const getFilteredHotels = async (filters = {}, page = 0, size = 10) => {
             ...sanitizedFilters,
             page,
             size,
+            sortBy,
+            sortDirection
         };
 
         const response = await apiClient.get('api/v1/hotels/filtered', {

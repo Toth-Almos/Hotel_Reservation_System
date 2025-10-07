@@ -6,10 +6,7 @@ import com.toth_almos.hotelreservationsystem.model.Room;
 import com.toth_almos.hotelreservationsystem.repository.HotelRepository;
 import com.toth_almos.hotelreservationsystem.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +55,11 @@ public class HotelServiceImpl implements HotelService {
             if (star != null && star > 0 ) {
                 predicates.add(cb.equal(root.get("star"), star));
             }
+
+            pageable.getSort().forEach(order -> {
+                Path<Object> path = root.get(order.getProperty());
+                query.orderBy(order.isAscending() ? cb.asc(path) : cb.desc(path));
+            });
 
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable);

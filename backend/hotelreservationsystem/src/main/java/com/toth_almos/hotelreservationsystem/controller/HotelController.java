@@ -8,6 +8,7 @@ import com.toth_almos.hotelreservationsystem.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,9 +46,20 @@ public class HotelController {
             @RequestParam(required = false) String country,
             @RequestParam(required = false) Integer star,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false, defaultValue = "name") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortDirection
     ) {
-        Page<Hotel> hotels = hotelService.findFilteredHotels(name, country, star, PageRequest.of(page, size));
+        List<String> allowedSortFields = List.of("name", "star", "country");
+        if(!allowedSortFields.contains(sortBy)) {
+            sortBy = "name";
+        }
+
+        Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        System.out.println("Sorting by: " + pageRequest.getSort());
+        Page<Hotel> hotels = hotelService.findFilteredHotels(name, country, star, pageRequest);
         return hotels.map(hotelMapper::toDTO);
     }
 

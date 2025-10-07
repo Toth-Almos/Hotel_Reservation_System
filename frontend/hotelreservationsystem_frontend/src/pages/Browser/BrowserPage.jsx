@@ -6,6 +6,8 @@ import { Link } from 'react-router'
 export default function BrowserPage() {
     const [hotels, setHotels] = useState();
     const [filters, setFilters] = useState({ name: '', country: '', star: '' });
+    const [sortBy, setSortBy] = useState("name");
+    const [sortDirection, setSortDirection] = useState("asc");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -14,12 +16,20 @@ export default function BrowserPage() {
 
     const handleSearch = async () => {
         try {
-            const data = await getFilteredHotels(filters);
+            const data = await getFilteredHotels(filters, 0, 10, sortBy, sortDirection);
             setHotels(data.content || []);
         } catch (error) {
             console.error("Error searching hotels:", error.message);
             setHotels([]);
         }
+    };
+
+    const handleReset = async () => {
+        setFilters({ name: '', country: '', star: '' });
+        setSortBy("name");
+        setSortDirection("asc");
+        const data = await getFilteredHotels({}, 0, 10, "name", "asc");
+        setHotels(data.content || []);
     };
 
     return (
@@ -30,7 +40,20 @@ export default function BrowserPage() {
                 <input name="name" placeholder="Name" value={filters.name} onChange={handleChange} />
                 <input name="country" placeholder="Country" value={filters.country} onChange={handleChange} />
                 <input name="star" type="number" placeholder="Star" min="1" max="5" value={filters.star} onChange={handleChange} />
+
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                    <option value="name">Name</option>
+                    <option value="country">Country</option>
+                    <option value="star">Star</option>
+                </select>
+
+                <select value={sortDirection} onChange={(e) => setSortDirection(e.target.value)}>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
                 <button onClick={handleSearch}>Search</button>
+                <button onClick={handleReset}>Reset Filters</button>
             </div>
 
             <ul className={classes.list}>
@@ -53,6 +76,6 @@ export default function BrowserPage() {
                     </li>
                 ))}
             </ul>
-        </div>
+        </div >
     )
 }
