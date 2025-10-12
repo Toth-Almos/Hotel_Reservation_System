@@ -11,6 +11,8 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,15 +31,17 @@ public class ReservationServiceImpl implements ReservationService {
     private final RoomRepository roomRepository;
     private final ReservationItemRepository reservationItemRepository;
     private final PaymentRepository paymentRepository;
+    private final JavaMailSender mailSender;
 
     @Autowired
-    public ReservationServiceImpl(ReservationRepository reservationRepository, UserRepository userRepository, HotelRepository hotelRepository, RoomRepository roomRepository, ReservationItemRepository reservationItemRepository, PaymentRepository paymentRepository) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, UserRepository userRepository, HotelRepository hotelRepository, RoomRepository roomRepository, ReservationItemRepository reservationItemRepository, PaymentRepository paymentRepository, JavaMailSender mailSender) {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.hotelRepository = hotelRepository;
         this.roomRepository = roomRepository;
         this.reservationItemRepository = reservationItemRepository;
         this.paymentRepository = paymentRepository;
+        this.mailSender = mailSender;
     }
 
     @Override
@@ -147,6 +151,30 @@ public class ReservationServiceImpl implements ReservationService {
         paymentRepository.save(payment);
         reservation.setPayment(payment);
 
+        //Send email
+        String subject = "Reservation created successfully";
+        String intro = "Dear "+ customer.getUsername() + ",\n" + "Your reservation was successfully created! If it wasn't you then please contact one of our administrators! You can see the details below:\n\n";
+        String outro = "\n\nIf you want to cancel your reservation, you can do it on our website in your your profile at the Cancel Active Reservations tab. Please keep in mind that you can only cancel your reservation 4 days before your check-in date for free. Otherwise you can contact one of our administrators who can cancel your reservations.";
+
+        StringBuilder rooms = new StringBuilder();
+        for(ReservationItem items : reservationItems) {
+            rooms.append("\tType of room: " + items.getRoom().getType().toString() + " - " + items.getNumberOfRoomsReserved() + " room(s)" + " - " + items.getRoom().getPricePerNight() + " €/night\n");
+        }
+
+        String details = "The hotel: " + hotel.getName() + " " + hotel.getAddress() +
+                "\nThe room(s) you reserved:\n" + rooms +
+                "\nYour check-in date: " + reservationRequest.getCheckInDate() +
+                "\nYour check-out date: " + reservationRequest.getCheckOutDate() +
+                "\nTotal cost of the stay: " + totalCost + "€" +
+                "\nPayment method chosen: " + reservationRequest.getPaymentMethod();
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(customer.getEmail());
+        message.setSubject(subject);
+        message.setText(intro + details + outro);
+        message.setFrom("toth.2000.almos@gmail.com");
+        mailSender.send(message);
+
         return reservationRepository.save(reservation);
     }
 
@@ -158,6 +186,17 @@ public class ReservationServiceImpl implements ReservationService {
         if(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getCheckInDate()) <= 4) {
             throw new IllegalStateException("Reservations can only be canceled before 4 days at maximum. Please contact the Administrator for more information!");
         }
+
+        //Send email
+        String subject = "Reservation cancelled successfully";
+        String intro = "Dear "+ reservation.getCustomer().getUsername() + ",\n\n" + "Your reservation was successfully cancelled! If it wasn't you then please contact one of our administrators!\n";
+        String outro = "We are sorry that you've changed your mind. If there was anything wrong with our system please contact one of our administrators! If there was something wrong with the hotel of your choice please contact the hotel staff!\n\nWe hope that you'll pay us a visit soon!";
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(reservation.getCustomer().getEmail());
+        message.setSubject(subject);
+        message.setText(intro + outro);
+        message.setFrom("toth.2000.almos@gmail.com");
+        mailSender.send(message);
 
         for (ReservationItem item : reservation.getReservationItems()) {
             reservationItemRepository.delete(item);
