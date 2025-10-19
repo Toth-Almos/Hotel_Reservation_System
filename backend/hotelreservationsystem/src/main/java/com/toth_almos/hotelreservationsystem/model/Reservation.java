@@ -43,4 +43,7 @@ public class Reservation {
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReservationItem> reservationItems;
+
+    @OneToOne(mappedBy = "reservation")
+    private CouponRedemption couponRedemption;      //helps access the coupon from reservation
 }
