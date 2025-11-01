@@ -1,7 +1,6 @@
 package com.toth_almos.hotelreservationsystem.dto;
 
 import com.toth_almos.hotelreservationsystem.model.CouponType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;

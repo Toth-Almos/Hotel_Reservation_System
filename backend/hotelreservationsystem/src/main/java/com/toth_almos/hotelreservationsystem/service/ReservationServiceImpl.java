@@ -31,17 +31,23 @@ public class ReservationServiceImpl implements ReservationService {
     private final RoomRepository roomRepository;
     private final ReservationItemRepository reservationItemRepository;
     private final PaymentRepository paymentRepository;
+    private final CouponRepository couponRepository;
+    private final CouponRedemptionRepository couponRedemptionRepository;
     private final JavaMailSender mailSender;
+    private final CouponService couponService;
 
     @Autowired
-    public ReservationServiceImpl(ReservationRepository reservationRepository, UserRepository userRepository, HotelRepository hotelRepository, RoomRepository roomRepository, ReservationItemRepository reservationItemRepository, PaymentRepository paymentRepository, JavaMailSender mailSender) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, UserRepository userRepository, HotelRepository hotelRepository, RoomRepository roomRepository, ReservationItemRepository reservationItemRepository, PaymentRepository paymentRepository, CouponRepository couponRepository, CouponRedemptionRepository couponRedemptionRepository, JavaMailSender mailSender, CouponService couponService) {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.hotelRepository = hotelRepository;
         this.roomRepository = roomRepository;
         this.reservationItemRepository = reservationItemRepository;
         this.paymentRepository = paymentRepository;
+        this.couponRepository = couponRepository;
+        this.couponRedemptionRepository = couponRedemptionRepository;
         this.mailSender = mailSender;
+        this.couponService = couponService;
     }
 
     @Override
@@ -111,6 +117,12 @@ public class ReservationServiceImpl implements ReservationService {
             throw new IllegalStateException("You already have an active reservation within the selected date range.");
         }
 
+        Coupon coupon = null;
+        if(reservationRequest.getCouponCode() != null && !reservationRequest.getCouponCode().isBlank()) {
+            coupon = couponRepository.findByCode(reservationRequest.getCouponCode()).orElseThrow(() -> new EntityNotFoundException("Coupon not found!"));
+            couponService.validateCouponCode(coupon.getCode(), customer.getId());
+        }
+
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer);
         reservation.setHotel(hotel);
@@ -134,6 +146,17 @@ public class ReservationServiceImpl implements ReservationService {
                     return item;
                 })
                 .toList();
+
+        //Subtract discount if there is any:
+        if(coupon != null) {
+            int discount = coupon.getDiscountValue();
+            if(coupon.getType() == CouponType.FIXED) {
+                totalCost.updateAndGet(v -> Math.max(0, v - discount));
+            }
+            else if(coupon.getType() == CouponType.PERCENTAGE) {
+                totalCost.updateAndGet(v -> v * (1 - (discount / 100.0)));
+            }
+        }
         reservation.setTotalCost(totalCost.get());
         reservation.setReservationItems(reservationItems);
 
@@ -175,7 +198,18 @@ public class ReservationServiceImpl implements ReservationService {
         message.setFrom("toth.2000.almos@gmail.com");
         mailSender.send(message);
 
-        return reservationRepository.save(reservation);
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+        //Create CouponRedemption:
+        if(coupon != null) {
+            CouponRedemption redemption = new CouponRedemption();
+            redemption.setCoupon(coupon);
+            redemption.setCustomer(customer);
+            redemption.setReservation(reservation);
+            couponRedemptionRepository.save(redemption);
+        }
+
+        return savedReservation;
     }
 
     @Transactional

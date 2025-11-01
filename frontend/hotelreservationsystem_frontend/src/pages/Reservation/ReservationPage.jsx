@@ -85,6 +85,7 @@ export default function ReservationPage() {
             checkInDate,
             checkOutDate,
             paymentMethod: paymentMethod,
+            couponCode: isCouponValid ? couponCode : null,
             reservationItemRequests: Object.entries(selectedRooms)
                 .map(([roomId, count]) => count > 0 ? { roomId: parseInt(roomId), numberOfRooms: count } : null)
                 .filter(item => item !== null),
@@ -119,6 +120,7 @@ export default function ReservationPage() {
                 setIsCouponValid(true);
                 setDiscountValue({ type: result.type, value: result.discountValue });
                 setValidationMessage(result.message);
+                setCouponCode(result.code);
 
                 calculateTotalCost(selectedRooms, checkInDate, checkOutDate);
             }

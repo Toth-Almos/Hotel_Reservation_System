@@ -16,4 +16,5 @@ public class ReservationRequest {
     private double totalCost;
     private List<ReservationItemRequest> reservationItemRequests;
     private PaymentMethod paymentMethod;
+    private String couponCode;
 }
