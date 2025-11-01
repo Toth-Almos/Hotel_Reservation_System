@@ -21,6 +21,7 @@ public class Coupon {
     private String code;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CouponType type;
 
     @Column(nullable = false)
