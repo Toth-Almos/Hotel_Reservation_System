@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 import classes from "./reservationPage.module.css";
 import { createReservation } from "../../services/ReservationService";
 import { useAuth } from "../../hooks/AuthContext";
+import { validateCoupon } from "../../services/CouponService";
 
 export default function ReservationPage() {
     const { user } = useAuth();
@@ -25,6 +26,11 @@ export default function ReservationPage() {
     const [checkOutDate, setCheckOutDate] = useState("");
     const [totalCost, setTotalCost] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState("ONSITE");
+    const [couponCode, setCouponCode] = useState("");
+    const [isCouponValid, setIsCouponValid] = useState(false);
+    const [discountValue, setDiscountValue] = useState({ type: null, value: 0 });
+    const [validationMessage, setValidationMessage] = useState("");
+    const [couponChecked, setCouponChecked] = useState(false);
 
     if (!hotel) {
         return <p className={classes.error}>Error: No hotel selected.</p>;
@@ -46,7 +52,17 @@ export default function ReservationPage() {
             cost += rooms[room.id] * room.pricePerNight * nights;
         }
 
-        setTotalCost(cost);
+        let discountedCost = cost;
+        if (isCouponValid && discountValue.type) {
+            if (discountValue.type === "FIXED") {
+                discountedCost = Math.max(0, cost - discountValue.value);
+            }
+            else if (discountValue.type === "PERCENTAGE") {
+                discountedCost = cost * (1 - discountValue.value / 100);
+            }
+        }
+
+        setTotalCost(discountedCost);
     };
 
     const handleDateChange = (checkIn, checkOut) => {
@@ -82,6 +98,48 @@ export default function ReservationPage() {
             console.error("Reservation failed:", error);
             alert("Reservation failed. Please try again.");
         }
+    };
+
+    const handleValidateCoupon = async () => {
+        if (!couponCode.trim()) {
+            setValidationMessage("Please enter a coupon code.");
+            return;
+        }
+
+        if (!user) {
+            alert("You must be logged in to make a reservation.");
+            return;
+        }
+
+        try {
+            const result = await validateCoupon(couponCode, user.id);
+            setCouponChecked(true);
+
+            if (result.valid) {
+                setIsCouponValid(true);
+                setDiscountValue({ type: result.type, value: result.discountValue });
+                setValidationMessage(result.message);
+
+                calculateTotalCost(selectedRooms, checkInDate, checkOutDate);
+            }
+            else {
+                setIsCouponValid(false);
+                setDiscountValue({ type: null, value: 0 });
+                setValidationMessage(result.message);
+            }
+        } catch (error) {
+            console.error(error);
+            setIsCouponValid(false);
+            setDiscountValue({ type: null, value: 0 });
+            setValidationMessage("Error during coupon validation process, please try again.");
+        }
+    }
+
+    const handleCouponChange = (e) => {
+        setCouponCode(e.target.value);
+        setIsCouponValid(false);
+        setCouponChecked(false);
+        setValidationMessage("");
     };
 
     return (
@@ -123,7 +181,34 @@ export default function ReservationPage() {
                     </select>
                 </label>
 
-                <button type="submit" className={classes.reserveButton}>Confirm Reservation</button>
+                <label>
+                    Coupon Code:
+                    <div className={classes.couponWrapper}>
+                        <input
+                            type="text"
+                            value={couponCode}
+                            onChange={handleCouponChange}
+                            className={classes.couponInput}
+                        />
+                        <button type="button" onClick={handleValidateCoupon} className={classes.validateButton}>
+                            Apply
+                        </button>
+                    </div>
+                </label>
+
+                {validationMessage && (
+                    <p className={isCouponValid ? classes.success : classes.error}>
+                        {validationMessage}
+                    </p>
+                )}
+
+                {isCouponValid && (
+                    <p className={classes.discountText}>
+                        Your Discount using this coupon: -{discountValue.type === "FIXED" ? discountValue.value : (discountValue.value / 100) * totalCost} €
+                    </p>
+                )}
+
+                <button type="submit" className={classes.reserveButton} disabled={(couponCode.trim() && !couponChecked) || (couponChecked && !isCouponValid && couponCode.trim())}>Confirm Reservation</button>
             </form>
         </div>
     );
