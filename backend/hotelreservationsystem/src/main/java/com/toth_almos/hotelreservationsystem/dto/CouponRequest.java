@@ -10,7 +10,11 @@ public class CouponRequest {
     private String code;
     private CouponType type;
     private int discountValue;
+    private boolean isActive;
     private LocalDate validFrom;
     private LocalDate validUntil;
 
+    public boolean getIsActive() {
+        return this.isActive;
+    }
 }
