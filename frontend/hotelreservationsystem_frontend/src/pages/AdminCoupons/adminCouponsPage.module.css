@@ -1,0 +1,181 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+/* ✅ Create Coupon Form */
+.newCouponForm {
+    background: #f7f7f7;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    row-gap: 12px;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.newCouponForm input,
+.newCouponForm select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.createButton {
+    grid-column: span 2;
+    padding: 10px 16px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.createButton:hover {
+    background: #1f7d33;
+}
+
+/* ✅ Filter/Search Bar */
+.searchSection {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.searchSection input,
+.searchSection select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* ✅ Coupon List */
+.list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.list li {
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.editButton {
+    padding: 8px 14px;
+    background: #ffc107;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.editButton:hover {
+    background: #e0a800;
+}
+
+/* ✅ Modal Overlay */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ✅ Modal Form */
+.editForm {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 10px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.editForm select,
+.editForm input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* ✅ Actions */
+.formActions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.saveButton {
+    background: #007bff;
+}
+
+.cancelButton {
+    background: #6c757d;
+}
+
+.deleteButton {
+    background: #dc3545;
+}
+
+.saveButton,
+.cancelButton,
+.deleteButton {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+.saveButton:hover {
+    background: #0056b3;
+}
+
+.cancelButton:hover {
+    background: #545b62;
+}
+
+.deleteButton:hover {
+    background: #a71d2a;
+}
+
+/* ✅ Delete Confirmation Area */
+.confirmDelete {
+    margin-top: 12px;
+    background: #fff3cd;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ffeeba;
+    text-align: center;
+}
+
+.confirmDelete button {
+    margin: 6px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}

@@ -14,6 +14,7 @@ export default function AdminPage() {
             <div className={classes.buttonContainer}>
                 <button onClick={() => handleNavigate("admin-hotels")} className={classes.button}>Hotels and Rooms</button>
                 <button onClick={() => handleNavigate("admin-reservations")} className={classes.button}>Reservations</button>
+                <button onClick={() => handleNavigate("admin-coupons")} className={classes.button}>Coupons</button>
             </div>
         </div>
     );

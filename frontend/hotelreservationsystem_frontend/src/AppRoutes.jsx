@@ -14,6 +14,7 @@ import UnauthorizedPage from "./pages/Unauthorized/UnauthorizedPage"
 import AdminHotelPage from "./pages/AdminHotel/AdminHotelPage"
 import AdminRoomsPage from "./pages/AdminRooms/AdminRoomsPage"
 import AdminReservationsPage from "./pages/AdminReservations/AdminReservationsPage"
+import AdminCouponPage from "./pages/AdminCoupons/AdminCouponsPage"
 
 export default function AppRoutes() {
     return (
@@ -32,6 +33,7 @@ export default function AppRoutes() {
             <Route path="/admin-hotels" element={<AdminRoute> <AdminHotelPage /> </AdminRoute>} />
             <Route path="/admin-rooms/:hotelId" element={<AdminRoute> <AdminRoomsPage /> </AdminRoute>} />
             <Route path="/admin-reservations" element={<AdminRoute> <AdminReservationsPage /> </AdminRoute>} />
+            <Route path="/admin-coupons" element={<AdminRoute> <AdminCouponPage /> </AdminRoute>} />
         </Routes>
     )
 }
