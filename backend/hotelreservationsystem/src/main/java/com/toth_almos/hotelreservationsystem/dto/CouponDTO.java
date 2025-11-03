@@ -16,5 +16,4 @@ public class CouponDTO {
     private boolean isActive;
     private LocalDate validFrom;
     private LocalDate validUntil;
-    private List<CouponRedemption> redemptions;
 }

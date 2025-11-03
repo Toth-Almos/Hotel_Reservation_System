@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/hotels/create-hotel", "api/v1/hotels/update-hotel/{id}").hasRole("ADMIN")
                         .requestMatchers("/api/v1/rooms/create-room", "/api/v1/rooms/update/{id}", "/api/v1/rooms/delete/{id}").hasRole("ADMIN")
                         .requestMatchers("/api/v1/coupons/validate").hasRole("CUSTOMER")
+                        .requestMatchers("/api/v1/coupons/create-coupons", "/api/v1/coupons/filtered", "/api/v1/coupons/update-coupon", "/api/v1/coupons/update-coupon/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated() // All other routes require authentication
                 )
                 .exceptionHandling(exception -> exception

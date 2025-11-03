@@ -14,10 +14,8 @@ import java.util.List;
 public interface CouponMapper {
     CouponMapper INSTANCE = Mappers.getMapper(CouponMapper.class);
 
-    @Mapping(source = "redemptions", target = "redemptions")
     CouponDTO toDTO(Coupon coupon);
 
-    @Mapping(source = "redemptions", target = "redemptions")
     Coupon toEntity(CouponDTO couponDTO);
 
     List<CouponDTO> toDTOList(List<Coupon> hotels);
