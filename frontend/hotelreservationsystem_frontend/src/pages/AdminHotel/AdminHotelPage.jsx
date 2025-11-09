@@ -7,6 +7,8 @@ export default function AdminHotelPage() {
     const [hotels, setHotels] = useState([]);
     const [editingHotel, setEditingHotel] = useState(null);
     const [filters, setFilters] = useState({ name: '', country: '', star: '' });
+    const [sortBy, setSortBy] = useState("name");
+    const [sortDirection, setSortDirection] = useState("asc");
     const [formData, setFormData] = useState({
         name: "",
         country: "",
@@ -29,12 +31,20 @@ export default function AdminHotelPage() {
 
     const handleSearch = async () => {
         try {
-            const data = await getFilteredHotels(filters);
+            const data = await getFilteredHotels(filters, 0, 10, sortBy, sortDirection);
             setHotels(data.content || []);
         } catch (error) {
             console.error("Error searching hotels:", error.message);
             setHotels([]);
         }
+    };
+
+    const handleReset = async () => {
+        setFilters({ name: '', country: '', star: '' });
+        setSortBy("name");
+        setSortDirection("asc");
+        const data = await getFilteredHotels({}, 0, 10, "name", "asc");
+        setHotels(data.content || []);
     };
 
     const handleEditClick = (hotel) => {
@@ -121,7 +131,20 @@ export default function AdminHotelPage() {
                 <input name="name" placeholder="Name" value={filters.name} onChange={handleFilterChange} />
                 <input name="country" placeholder="Country" value={filters.country} onChange={handleFilterChange} />
                 <input name="star" type="number" placeholder="Star" min="1" max="5" value={filters.star} onChange={handleFilterChange} />
+
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                    <option value="name">Name</option>
+                    <option value="country">Country</option>
+                    <option value="star">Star</option>
+                </select>
+
+                <select value={sortDirection} onChange={(e) => setSortDirection(e.target.value)}>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
                 <button onClick={handleSearch}>Search</button>
+                <button onClick={handleReset}>Reset Filters</button>
             </div>
 
             {/* Hotel List */}
