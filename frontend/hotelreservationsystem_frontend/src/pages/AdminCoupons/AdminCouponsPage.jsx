@@ -9,7 +9,7 @@ export default function AdminCouponPage() {
 
     const [filters, setFilters] = useState({
         code: '',
-        active: null
+        isActive: null
     });
 
     const [newCouponData, setNewCouponData] = useState({
@@ -18,7 +18,7 @@ export default function AdminCouponPage() {
         type: "FIXED",
         validFrom: "",
         validUntil: "",
-        active: true
+        isActive: true
     });
 
     const [formData, setFormData] = useState({
@@ -27,12 +27,12 @@ export default function AdminCouponPage() {
         type: "FIXED",
         validFrom: "",
         validUntil: "",
-        active: true
+        isActive: true
     });
 
     const handleFilterChange = (e) => {
         let { name, value } = e.target;
-        if (name === "active") {
+        if (name === "isActive") {
             value = value === "" ? null : value === "true";
         }
         setFilters(prev => ({ ...prev, [name]: value }));
@@ -40,7 +40,7 @@ export default function AdminCouponPage() {
 
     const handleSearch = async () => {
         try {
-            const data = await getFilteredCoupons(filters);
+            const data = await getFilteredCoupons(filters, 0, 10);
             setCoupons(data.content || []);
         } catch (error) {
             console.error("Error searching coupons:", error);
@@ -111,7 +111,7 @@ export default function AdminCouponPage() {
                 type: "FIXED",
                 validFrom: "",
                 validUntil: "",
-                active: true
+                isActive: true
             });
         } catch (error) {
             console.error("Error creating coupon:", error);
@@ -150,7 +150,7 @@ export default function AdminCouponPage() {
             {/* Filter Section */}
             <div className={classes.searchSection}>
                 <input name="code" placeholder="Code" value={filters.code} onChange={handleFilterChange} />
-                <select name="active" value={filters.active ?? ""} onChange={handleFilterChange}>
+                <select name="isActive" value={filters.isActive ?? ""} onChange={handleFilterChange}>
                     <option value="">All</option>
                     <option value="true">Active</option>
                     <option value="false">Inactive</option>
@@ -201,7 +201,7 @@ export default function AdminCouponPage() {
                         <input name="validUntil" type="date" value={formData.validUntil} onChange={handleFormChange} />
 
                         <label>Status:</label>
-                        <select name="active" value={formData.active} onChange={handleFormChange}>
+                        <select name="isActive" value={formData.isActive} onChange={handleFormChange}>
                             <option value={true}>Active</option>
                             <option value={false}>Inactive</option>
                         </select>

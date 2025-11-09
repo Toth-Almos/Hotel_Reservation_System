@@ -57,7 +57,7 @@ public class CouponController {
     @GetMapping("/filtered")
     public Page<CouponDTO> getFilteredCoupons(
             @RequestParam(required = false) String code,
-            @RequestParam(required = false) boolean isActive,
+            @RequestParam(required = false) Boolean isActive,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
