@@ -15,6 +15,7 @@ import AdminHotelPage from "./pages/AdminHotel/AdminHotelPage"
 import AdminRoomsPage from "./pages/AdminRooms/AdminRoomsPage"
 import AdminReservationsPage from "./pages/AdminReservations/AdminReservationsPage"
 import AdminCouponPage from "./pages/AdminCoupons/AdminCouponsPage"
+import ReviewListPage from "./pages/ReviewList/ReviewListPage"
 
 export default function AppRoutes() {
     return (
@@ -27,6 +28,7 @@ export default function AppRoutes() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/reserve/:id" element={<ReservationPage />} />
             <Route path="/reservation-history" element={<ReservationHistoryPage />} />
+            <Route path="/reviews" element={<ReviewListPage />} />
             <Route path="/reservation-cancel" element={<ReservationCancelPage />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route path="/admin" element={<AdminRoute> <AdminPage /> </AdminRoute>} />

@@ -29,3 +29,13 @@ export const getReviewsForHotel = async (hotelId) => {
         throw new Error(error.response?.data?.message || "Review fetching failed.");
     }
 }
+
+export const deleteReview = async (reviewId) => {
+    try {
+        const respone = await apiClient.delete('api/v1/review/delete-review/' + reviewId)
+        return respone.data;
+    } catch (error) {
+        console.error("Review fetching error:", error.response?.data || error.message);
+        throw new Error(error.response?.data?.message || "Review fetching failed.");
+    }
+}
