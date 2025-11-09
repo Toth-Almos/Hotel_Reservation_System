@@ -31,6 +31,7 @@ export default function ReservationPage() {
     const [discountValue, setDiscountValue] = useState({ type: null, value: 0 });
     const [validationMessage, setValidationMessage] = useState("");
     const [couponChecked, setCouponChecked] = useState(false);
+    const [baseCost, setBaseCost] = useState(0);
 
     if (!hotel) {
         return <p className={classes.error}>Error: No hotel selected.</p>;
@@ -51,6 +52,8 @@ export default function ReservationPage() {
         for (const room of hotel.rooms) {
             cost += rooms[room.id] * room.pricePerNight * nights;
         }
+
+        setBaseCost(cost);
 
         let discountedCost = cost;
         if (isCouponValid && discountValue.type) {
@@ -173,7 +176,7 @@ export default function ReservationPage() {
                     </div>
                 ))}
 
-                <h3 className={classes.totalCost}>Total Cost: {totalCost.toFixed(2)}€</h3>
+                <h3 className={classes.totalCost}>Total Cost: {baseCost.toFixed(2)}€</h3>
 
                 <label>
                     Payment Method:
@@ -206,7 +209,7 @@ export default function ReservationPage() {
 
                 {isCouponValid && (
                     <p className={classes.discountText}>
-                        Your Discount using this coupon: -{discountValue.type === "FIXED" ? discountValue.value : (discountValue.value / 100) * totalCost} €
+                        Your Discount using this coupon: -{discountValue.type === "FIXED" ? discountValue.value : (discountValue.value / 100) * baseCost} €
                     </p>
                 )}
 
