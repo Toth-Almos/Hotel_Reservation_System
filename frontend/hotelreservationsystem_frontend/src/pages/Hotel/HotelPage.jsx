@@ -5,9 +5,14 @@ import { getById } from '../../services/HotelService';
 import { useNavigate } from 'react-router';
 import HotelReviews from '../../components/HotelReviews/HotelReviews';
 import ReviewForm from '../../components/ReviewForm/ReviewForm';
+import { useAuth } from '../../hooks/AuthContext'
+import { isHotelFavorite, addFavoriteHotel } from "../../services/FavoriteHotelService";
 
 export default function HotelPage() {
     const [hotel, setHotel] = useState();
+    const [isFavorite, setIsFavorite] = useState(false);
+    const { user } = useAuth();
+
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -15,9 +20,34 @@ export default function HotelPage() {
         getById(id).then(setHotel);
     }, [id])
 
+    useEffect(() => {
+        if (user && id) {
+            isHotelFavorite(user.id, id)
+                .then(res => {
+                    setIsFavorite(res);
+                })
+                .catch(err => console.error("Favorite check failed", err));
+        }
+    }, [user, id]);
+
     const handleBookRoom = () => {
         navigate(`/reserve/${id}`, { state: { hotel } });
     }
+
+    const handleAddFavorite = async () => {
+        if (!user) {
+            alert("You must be logged in to add favorites.");
+            return;
+        }
+
+        try {
+            await addFavoriteHotel(user.id, hotel.id);
+            setIsFavorite(true);
+        } catch (error) {
+            console.error("Error adding favorite:", error);
+            alert("Could not add hotel to favorites.");
+        }
+    };
 
     if (!hotel) return <p>Loading...</p>;
 
@@ -33,6 +63,14 @@ export default function HotelPage() {
                 <h1>{hotel.name}</h1>
                 <p className={classes.stars}>{Array(hotel.star).fill("⭐").join("")}</p>
                 <p className={classes.location}>{hotel.country}, {hotel.city} {hotel.address}</p>
+
+                <button
+                    className={`${classes.favoriteButton} ${isFavorite ? classes.favorited : ""}`}
+                    onClick={handleAddFavorite}
+                    disabled={isFavorite}
+                >
+                    {isFavorite ? "Favorited ❤️" : "Add to Favorites 💛"}
+                </button>
             </div>
 
             {/* Rooms Section */}

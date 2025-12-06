@@ -107,3 +107,27 @@
 .bookRoom:hover {
     background-color: #6b5441;
 }
+
+.favoriteButton {
+    margin-top: 10px;
+    padding: 10px 16px;
+    font-size: 16px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.favoriteButton:hover {
+    background-color: #e6b800;
+}
+
+.favorited {
+    background-color: #ff9999;
+    cursor: default;
+}
+
+.favorited:hover {
+    background-color: #ff9999;
+}
